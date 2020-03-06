@@ -1,0 +1,26 @@
+section {
+    width: 200px;
+    height: 200px;
+    background-color: aqua !important;
+    border: 2px dashed red;
+}
+
+#a {
+    background-color: red !important;
+}
+
+.b {
+    background-color: yellow;
+}
+
+.b#a {
+    background-color: orange;
+}
+
+section#a {
+    background-color: blue;
+}
+
+section.b#a {
+    background-color: green;
+}
