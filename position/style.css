@@ -1,0 +1,51 @@
+section#main {
+    margin: 0 auto;
+    background-color: lightskyblue;
+    border: 2px dashed black;
+    width: 600px;
+    height: 500px;
+    position: relative;
+}
+
+div {
+    position: absolute;
+    font-size: 20px;
+    width: 100px;
+    height: 100px;
+    border: 2px solid red;
+    text-align: center;
+}
+
+section >:nth-child(2n) {
+    background-color: black;
+    color: white;
+}
+
+section >:nth-child(2n+1) {
+    background-color: white;
+    color: black;
+}
+
+#a {
+    left: 50px;
+    top: 50px;
+    z-index: 1000;
+}
+
+#b {
+    left: 100px;
+    top: 100px;
+    z-index: 900;
+}
+
+#c {
+    left: 150px;
+    top: 150px;
+    z-index: 1100;
+}
+
+#d {
+    left: 200px;
+    top: 200px;
+    z-index: 700;
+}

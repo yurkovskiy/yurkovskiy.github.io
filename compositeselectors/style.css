@@ -57,7 +57,7 @@ p::first-line {
 
 footer > div {
     box-sizing: content-box;
-    wid th: 500px;
+    width: 500px;
     height: 100px;
     padding: 10px;
     border: 10px solid black;
