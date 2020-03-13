@@ -1,0 +1,64 @@
+body {
+    font-size: 20px;
+}
+
+p {
+    height: 40px;
+}
+
+/* div + p {
+    color: red;
+} */
+
+p + p {
+    color: red;
+}
+
+a[href$=".pdf"] {
+    color: green;
+}
+
+a:link {
+    text-decoration: none;
+    cursor: text;
+}
+
+a:hover {
+    font-size: 2em;
+}
+
+p:hover {
+    background-color: yellow;
+}
+
+ul >:nth-child(6) {
+    background-color: green;
+}
+
+ul >:nth-child(2n) {
+    background-color: red;
+}
+
+ul >:nth-child(2n+1) {
+    background-color: yellow;
+}
+
+p:empty {
+    background-color: red;
+}
+
+input:focus {
+    background-color: yellow    ;
+}
+
+p::first-line {
+    font-size: 3em;
+}
+
+footer > div {
+    box-sizing: content-box;
+    wid th: 500px;
+    height: 100px;
+    padding: 10px;
+    border: 10px solid black;
+}
