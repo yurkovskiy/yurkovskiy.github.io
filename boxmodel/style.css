@@ -1,0 +1,42 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    color: white;
+}
+nav {
+    background-color: maroon;
+    text-align: center;
+}
+
+nav > h1 {
+    height: 40px;
+    padding: 5px;
+}
+
+#mainheader {
+    background-color: cornflowerblue;
+    text-align: center;
+    height: 100px;
+}
+
+article > section {
+    width: 70%;
+    background-color: greenyellow;
+    float: left;
+    text-align: center;
+}
+
+article > aside {
+    width: 30%;
+    background-color: lightgreen;
+    float: left;
+    text-align: center;
+}
+
+footer {
+    background-color: burlywood;
+    text-align: center;
+}
