@@ -1,0 +1,21 @@
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+    background-color: aqua;
+}
+
+p {
+    width: 800px;
+    height: 900px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: rgb(55, 156, 85);
+    border-radius: 50px;
+    background: radial-gradient(a   qua, red);
+    
+    /* background-image: url("https://avatars1.githubusercontent.com/u/4039390?s=460&u=20c939cce24e98c89031c8bdd3716c63b190702d&v=4");
+    background-repeat: repeat-x;
+    background-position: center;
+    background-attachment: fixed;
+    opacity: 0.1; */
+}

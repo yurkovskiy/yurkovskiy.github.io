@@ -1,6 +1,9 @@
 * {
     margin: 0;
     padding: 0;
+}
+
+body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -34,4 +37,15 @@ h1 {
 #e {
     clear: both;
     width: 100%;
+    font-size: 1.5em;
+    overflow-y: scroll;
+}
+
+
+#mainp {
+    border: 2px solid red;
+}
+
+span {
+    border: inherit;
 }
