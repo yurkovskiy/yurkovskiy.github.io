@@ -25,14 +25,14 @@ nav > h1 {
 article > section {
     width: 70%;
     background-color: greenyellow;
-    float: left;
+    /*float: left;*/
     text-align: center;
 }
 
 article > aside {
     width: 30%;
     background-color: lightgreen;
-    float: left;
+    /*float: left;*/
     text-align: center;
 }
 
