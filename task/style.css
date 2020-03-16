@@ -1,0 +1,18 @@
+html {
+    font-size: 20px;
+}
+
+p {
+    /*font-family: "Parisienne";*/
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #de2219;
+    hyphens: auto;
+    column-count: 3;
+    column-gap: 10px;
+    column-rule: solid red;
+}
+
+span {
+    font-size: 0.8em;
+}
