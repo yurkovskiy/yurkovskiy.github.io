@@ -1,0 +1,36 @@
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1.2em;
+}
+
+
+@media screen and (min-width: 1000px) and (max-width: 1920px) {
+    main {
+        width: 800px;
+    }
+    
+    #left {
+        width: 70%;
+        float: left;
+        background-color: greenyellow;
+    }
+    
+    #right {
+        width: 30%;
+        float: left;
+        background-color: aqua;
+    }
+}
+
+@media screen and (min-width: 320px) and (max-width: 750px) {
+    main {
+        width: 100%;
+    }
+    #left {
+        background-color: greenyellow;
+    }
+    #right {
+        background-color: aqua;
+    }
+}
+
