@@ -1,0 +1,7 @@
+input {
+    font-size: 1.2em;
+}
+
+p:hover {
+    background-color: lightgreen;
+}
