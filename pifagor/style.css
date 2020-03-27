@@ -14,3 +14,7 @@
     display: table;
     border-collapse: collapse;
 }
+
+.cell-main {
+    background-color: green;
+}
