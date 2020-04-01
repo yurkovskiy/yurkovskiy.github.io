@@ -4,17 +4,20 @@ var div_c = document.getElementById("C");
 
 div_a.addEventListener("click", function(e) {
     console.log("I am A");
-    //e.stopPropagation();
+    console.log(this);
+    e.stopPropagation();
 }, false);
 
-div_b.addEventListener("click", function(e) {
+div_b.addEventListener("click", (e) => {
     console.log("I am B");
-    //e.stopPropagation();
+    console.log(this);
+    e.stopPropagation();
 }, false);
 
-div_c.addEventListener("click", function(e) {
+div_c.addEventListener("click", (e) => {
     console.log("I am C");
-    //e.stopPropagation();
+    console.log(this);
+    e.stopPropagation();
 }, false);
 
 
