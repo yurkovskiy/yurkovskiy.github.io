@@ -2,11 +2,17 @@ btnCalc.addEventListener("click", exchageRate, false);
 
 function exchageRate(e) {
     var rates = [];
+    var dates = [];
     var startDate = new Date(sdate.value);
     var endDate = new Date(edate.value);
     const ONEDAY = 24 * 3600 * 1000;
+    const chartTitle = `${currency.value}/UAH Exchange Rate`;
+
+    if ((startDate > new Date()) || (endDate > new Date())) {
+        return;
+    }
     
-    if (endDate < startDate) {
+    if (endDate < startDate) {  
         return;
     }
 
@@ -15,16 +21,48 @@ function exchageRate(e) {
     let i = 0;
     while(i <= diff) {
         currDate = new Date(startDate.valueOf() + (i * ONEDAY));
-        getRateByDate(currency.value, dateToStringNBU(currDate), rates);
         i++;
+        if ((currDate.getDay() === 6) || (currDate.getDay() === 0)) {
+            continue;
+        }
+        dates.push(dateToStringNBU(currDate));
+        getRateByDate(currency.value, dateToStringNBU(currDate), rates);
     }
     
-    console.log(rates.length);
-    for (let j = 0; j < rates.length; j++) {
-        var p = document.createElement(p);
-        p.innerText = rates[j];
-        result.appendChild(p);
-    }
+    setTimeout(function() {
+        Highcharts.chart('result', {
+            chart: {
+                type: 'spline'
+            },
+            title: {
+                text: chartTitle
+            },
+            subtitle: {
+                text: 'Source: bank.gov.ua'
+            },
+            xAxis: {
+                categories: dates
+            },
+            yAxis: {
+                title: {
+                    text: 'rate UAH'
+                }
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: false
+                }
+            },
+            series: [{
+                name: currency.value,
+                data: rates
+            }]
+        });
+    }, 5000);
+    
     //return;
 }
 
