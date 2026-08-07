@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NBU Rate Terminal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="scanline"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">₴</span>
+      <div class="brand-text">
+        <span class="brand-title">NBU Rate Terminal</span>
+        <span class="brand-sub">Official exchange data · bank.gov.ua</span>
+      </div>
+    </div>
+    <div class="clock" id="clock">--:--:--</div>
+  </header>
+
+  <main class="layout">
+
+    <section class="panel controls" aria-label="Query controls">
+      <div class="panel-label">01 / Query</div>
+
+      <form id="rate-form" class="rate-form">
+        <div class="field">
+          <label for="currency">Currency</label>
+          <select id="currency" name="currency">
+            <option value="usd" selected>USD — US Dollar</option>
+            <option value="eur">EUR — Euro</option>
+            <option value="gbp">GBP — British Pound</option>
+            <option value="pln">PLN — Polish Zloty</option>
+            <option value="chf">CHF — Swiss Franc</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="start-date">From</label>
+          <input type="date" id="start-date" name="start-date" required>
+        </div>
+
+        <div class="field">
+          <label for="end-date">To</label>
+          <input type="date" id="end-date" name="end-date" required>
+        </div>
+
+        <button type="submit" class="btn-fetch" id="fetch-btn">
+          <span class="btn-label">Fetch rates</span>
+        </button>
+      </form>
+
+      <p class="hint">Dates are sent to the NBU archive in <code>YYYYMMDD</code> format automatically.</p>
+      <p class="error" id="error-box" hidden></p>
+    </section>
+
+    <section class="panel readout" aria-label="Latest rate">
+      <div class="panel-label">02 / Latest</div>
+      <div class="readout-body" id="readout-body">
+        <div class="readout-empty">No data yet — run a query</div>
+      </div>
+    </section>
+
+    <section class="panel chart-panel" aria-label="Rate history chart">
+      <div class="panel-label">03 / History</div>
+      <div class="chart-wrap">
+        <div class="chart-status" id="chart-status">Awaiting query…</div>
+        <canvas id="rate-chart"></canvas>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    Data source: National Bank of Ukraine currency exchange archive (JSON API)
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

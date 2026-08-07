@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<style type="text/css">
+	div {
+		width: 100px;
+		height: 100px;
+		border: 1px solid #000;
+		text-align: center;
+	}
+	</style>
+</head>
+<body>
+
+<div id="a"><h1>A</h1></div>
+<div id="b"><h1>B</h1></div>
+<div id="c"><h1>C</h1></div>
+<div id="d"><h1>D</h1></div>
+<div id="e"><h1>E</h1></div>
+<div id="f"><h1>F</h1></div>
+
+<button id="btn_a">A</button>
+<button id="btn_b">B</button>
+<button id="btn_c">C</button>
+<button id="btn_d">D</button>
+<button id="btn_e">E</button>
+<button id="btn_f">F</button>
+
+<script type="text/javascript">
+	function changeDisplay(element) {
+		if (element.style.display != "none") {
+			element.style.display = "none";
+			}
+			else {
+				element.style.display = "block";
+			}
+	}
+</script>
+
+<script type="text/javascript">
+	var buttons = document.getElementsByTagName("button");
+	for (var i = 0;i < buttons.length;i++) {
+		buttons[i].addEventListener("click", function(e) {
+			var element = document.getElementById(e.target.id.charAt(e.target.id.length - 1));
+			changeDisplay(element);
+		},false);		
+	}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+	#a {
+		width: 200px;
+		height: 200px;
+		background-color: yellow;
+	}
+	</style>
+</head>
+<body>
+
+<div id="a">
+	
+</div>
+
+<script type="text/javascript">
+	function eventHandler(event) {
+		console.log(event.type);
+	}
+
+	a.addEventListener("mousedown", eventHandler, false);
+	a.addEventListener("mousemove", eventHandler, false);
+	a.addEventListener("mouseout", eventHandler, false);
+	a.addEventListener("mouseover", eventHandler, false);
+	a.addEventListener("mouseup", eventHandler, false);
+	a.addEventListener("click", eventHandler, false);
+	a.addEventListener("dblclick", eventHandler, false);
+</script>
+
+</body>
+</html>

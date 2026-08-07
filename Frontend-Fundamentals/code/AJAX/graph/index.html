@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        div {
+            width: 600px;
+            height: 500px;
+        }
+    </style>
+  </head>
+  <body>
+    <div>
+      <canvas id="myChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      const ctx = document.getElementById("myChart");
+      const dateRange = ["20260701", "20260702", "20260703", "20260704"];
+
+      const exhcangeRates = [];
+      for (let i = 0; i < dateRange.length; i++) {
+        exhcangeRates.push(44 + Math.random());
+      }
+
+      new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: dateRange,
+          datasets: [
+            {
+              label: "dates",
+              data: exhcangeRates, // should be get from NBU
+              fill: false,
+              borderColor: "rgb(75, 192, 192)",
+              tension: 0.1,
+            },
+          ],
+        },
+      });
+    </script>
+  </body>
+</html>

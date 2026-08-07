@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf8">
+	<title>New Game</title>
+
+	<style type="text/css">
+	div#main {
+		margin: 0 auto;
+		border: 2px solid #000;
+		width: 800px;
+		height: 500px;
+		padding-left: 5px;
+		padding-right: 5px;
+		position: relative;
+		overflow: hidden; 
+	}
+	</style>
+
+	<script type="text/javascript">
+	// Global variables
+	var DEFAULT_SIZE = 30; // size of figure
+	var X_COUNT = 10; // number of figures by x 
+	var Y_COUNT = 10; // number of figures by y
+	var DX = 0; // offset by x axis
+	var DY = DEFAULT_SIZE; // offset by y axis
+	var CURR_ROW = 0; // current generated row by getNextRow() function
+	var CONTAINER = "main"; // container id
+	var figures = []; // array with instanses of Figure
+	
+	/**
+	 * @name Figure object for represents rectangle element
+	 * @param String unique identifier of element
+	 * @param int coordinate by x axis
+	 * @param int coordinate by y axis
+	 * @param Boolean visible flag
+	 */
+	function Figure(id, c_x, c_y, c_v) {
+		// check visible flag param
+		if (typeof c_v !== "boolean") {
+			c_v = true;
+		}
+		this.id = id;
+		this.x = c_x;
+		this.y = c_y;
+		this.visible = c_v;
+		this.width = DEFAULT_SIZE;
+		this.height = DEFAULT_SIZE;
+		this.bgColor = "#FF0000";
+
+		if (!this.visible) {
+			this.bgColor = "#FFFFFF";
+		}
+
+		// assign methods
+		this.show = show;
+		this.hide = hide;
+		this.move = move;
+	}
+
+	/**
+	 * Create and show Figure element in 'container'
+	 */
+	function show() {
+		var mainContainer = document.getElementById(CONTAINER);
+		var element = document.createElement("div");
+		
+		var positionStyle = "position:absolute;";
+		var positionPlace = "left:"+this.x+"px;top:"+this.y+"px;";
+		var size = "width:"+this.width+"px;height:"+this.height+"px;";
+		var colors = "background-color:"+this.bgColor+";border:1px solid #ffffff;";
+		//var colors = "background-color:"+this.bgColor;
+		var style = positionStyle + positionPlace + size + colors; 
+
+		element.setAttribute("id", this.id);
+		element.setAttribute("style", style);
+		mainContainer.appendChild(element);
+
+	}
+
+	/**
+	 * Remove 'hide' Figure element from 'container'
+	 */
+	function hide() {
+		var mainDiv = document.getElementById(CONTAINER);
+		var divSquare = document.getElementById(this.id);
+		mainDiv.removeChild(divSquare);
+	}
+
+	/**
+	 * Move Figure element
+	 * @param int offset by x axis
+	 * @param int offset by y axis 
+	 */
+	function move(dx, dy) {
+		this.hide();
+		this.x = this.x + dx;
+		this.y = this.y + dy;
+		this.show();
+	}
+
+	/**
+	 * Generate random number and return 'flag' which depends on generated number
+	 * @return Boolean
+	 */
+	function getRandomFlag() {
+		var REDUCE_COEF = 20;
+		var THRESHOLD_COEF = 12;
+		var flag = true; // default flag value
+		var num = Math.round(REDUCE_COEF * Math.random() + 1);
+		if (num >= THRESHOLD_COEF) {
+			flag = true;
+		}
+		else {
+			flag = false;
+		}
+		return flag;
+	}
+
+	/**
+	 * Generate (init) game board
+	 */
+	function init() {
+		for (var i = 0; i < Y_COUNT; i++) {
+			figures[i] = new Array();
+		}
+
+		for (var i = 0; i < Y_COUNT; i++) {
+			for (var j = 0; j < X_COUNT; j++) {
+				var id = "f_" + i + j;
+				var c_x = j + j * DEFAULT_SIZE;
+				var c_y = i + i * DEFAULT_SIZE;
+				var c_v = getRandomFlag();
+				figures[i][j] = new Figure(id, c_x, c_y, c_v);
+				figures[i][j].show();
+			}
+		}
+	}
+
+	/**
+	 * Generate and show new row of Figures
+	 */
+	function getNextRow() {
+		var row = [];
+		for (var i = 0;i < X_COUNT; i++) {
+			var id = "f_" + CURR_ROW + i;
+			var c_x = i + i * DEFAULT_SIZE;
+			var c_y = 0;
+			var c_v = getRandomFlag();
+			row[i] = new Figure(id, c_x, c_y, c_v);
+			row[i].show();
+		}
+		// add new row[] to figures[][] array
+		figures.unshift(row);
+	}
+
+	/**
+	 * Move (Shift) all elements of figures[][] 
+	 */
+	function moveFigures() {
+		for (var i = 0; i < figures.length; i++) {
+			for (var j = 0; j < X_COUNT; j++) {
+				figures[i][j].move(DX, DY);
+			}
+		}
+	}
+
+	/**
+	 * Main core function
+	 */
+	function working() {
+		moveFigures(); // move current figures
+		getNextRow(); // generating new row
+		CURR_ROW++; // increment CURR_ROW for new Figure.id attribute
+	}
+	</script>
+
+	<script type="text/javascript">
+	window.setInterval(working, 1000);
+	</script>
+
+
+</head>
+<body onload="init()">
+<div id="main">
+</div>
+</body>
+</html>

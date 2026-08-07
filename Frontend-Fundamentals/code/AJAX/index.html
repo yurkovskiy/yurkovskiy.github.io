@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section>
+        <h2>Currency Exchange</h2>
+        <label for="currency">Currency</label>
+        <select name="currency" id="currency">
+            <option value="USD">US Dollar</option>
+            <option value="EUR">Euro</option>
+            <option value="PLN">Zloty</option>
+        </select>
+        <label for="edate">Ex.: date</label><input type="date" name="edate" id="edate">
+        <input type="button" id="btnRate" value="Get Rate">
+    </section>
+
+    <section id="data"></section>
+
+    <script src="scriptfetch.js"></script>
+</body>
+</html>
