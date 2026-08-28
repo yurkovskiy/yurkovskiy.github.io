@@ -198,3 +198,94 @@ Recap in one sentence each:
 - Keep a browser window with dev tools' device toolbar open the whole session — resizing live is more convincing than any slide.
 - If short on time, the segments you can compress are #7 (component tour) and #3 (setup) — the grid (#4) and navbar (#6) are the ones worth protecting.
 - Common student confusion point: mixing up `col-md-4` (applies from md *and up*) vs. thinking it only applies *at* md. Clarify with the breakpoint table.
+
+---
+
+# Appendix: Glossary of CSS Classes Used
+
+A quick-reference sheet for every Bootstrap class used in this lesson, grouped by section. Hand this out alongside the plan or keep it open while live-coding.
+
+## Layout / Grid
+
+| Class | What it does |
+|---|---|
+| `container` | Centers content and adds responsive side padding; width adjusts at each breakpoint. |
+| `container-fluid` | Like `container`, but always 100% width at every breakpoint. |
+| `row` | A horizontal wrapper for columns; adds negative margin to offset column padding. |
+| `col-12` | Column takes all 12 of 12 grid units (full width) — applies from the smallest screen up. |
+| `col-md-4` | Column takes 4 of 12 grid units, starting at the `md` breakpoint (≥768px) and up. |
+
+## Spacing Utilities
+
+Bootstrap spacing classes follow the pattern `{property}{sides}-{size}`.
+- Property: `m` (margin) or `p` (padding)
+- Sides: `t` (top), `b` (bottom), `s` (start/left), `e` (end/right), `x` (left+right), `y` (top+bottom), or none (all sides)
+- Size: `0`–`5` (increasing scale) or `auto`
+
+| Class | What it does |
+|---|---|
+| `p-3` | Padding on all sides, size 3 (1rem / 16px). |
+| `mt-4` | Margin-top, size 4 (1.5rem / 24px). |
+
+## Color / Background Utilities
+
+| Class | What it does |
+|---|---|
+| `bg-primary` | Sets background color to the theme's primary color (blue by default). |
+| `bg-secondary` | Sets background color to the theme's secondary color (gray by default). |
+| `bg-success` | Sets background color to the theme's "success" color (green by default). |
+| `bg-dark` | Sets background color to dark/near-black. |
+| `text-white` | Sets text color to white — commonly paired with dark backgrounds for contrast. |
+
+## Text Utilities
+
+| Class | What it does |
+|---|---|
+| `text-center` | Centers text horizontally. |
+
+## Buttons
+
+| Class | What it does |
+|---|---|
+| `btn` | Base button class — required on every Bootstrap button; provides padding, border-radius, cursor styling. |
+| `btn-primary` | Applies the theme's primary color styling on top of `.btn`. |
+
+## Cards
+
+| Class | What it does |
+|---|---|
+| `card` | Container with a border, rounded corners, and padding — the base wrapper for card components. |
+| `card-body` | Adds internal padding around the card's content. |
+| `card-title` | Styles an element (usually a heading) as the card's title (adjusts margin/weight). |
+| `card-text` | Removes default bottom margin from paragraphs inside a card for consistent spacing. |
+
+## Alerts
+
+| Class | What it does |
+|---|---|
+| `alert` | Base alert class — adds padding, border, and rounded corners. |
+| `alert-warning` | Applies yellow/warning color scheme on top of `.alert`. |
+
+## Navbar
+
+| Class | What it does |
+|---|---|
+| `navbar` | Base class for the navigation bar component. |
+| `navbar-expand-lg` | Navbar displays full/uncollapsed starting at the `lg` breakpoint (≥992px); below that, it collapses into the hamburger menu. |
+| `navbar-dark` | Adjusts navbar text/icon colors for use on a dark background. |
+| `navbar-brand` | Styles the site logo/name link in the navbar (larger text, specific spacing). |
+| `navbar-toggler` | Styles the hamburger button itself (border, padding, focus state). |
+| `navbar-toggler-icon` | The hamburger icon graphic shown inside the toggler button. |
+| `navbar-nav` | Styles a `<ul>` as a navbar's list of navigation links (removes bullets, adjusts flex layout). |
+| `nav-item` | Wraps each `<li>` in a navbar list; mostly a semantic/spacing hook. |
+| `nav-link` | Styles an `<a>` as a navigation link (padding, color, hover state). |
+| `collapse` | Marks an element as collapsible — hidden by default, shown when toggled. |
+| `navbar-collapse` | Combines with `collapse`; specifically handles the collapsing behavior of navbar content on small screens. |
+| `ms-auto` | Margin-start: auto — pushes the element (and everything after it) to the right in a flex container. |
+
+## Bootstrap Data Attributes (not CSS classes, but used alongside them)
+
+| Attribute | What it does |
+|---|---|
+| `data-bs-toggle="collapse"` | Tells Bootstrap's JavaScript that clicking this element should toggle a collapsible element. |
+| `data-bs-target="#navMenu"` | Specifies *which* element (by ID) gets toggled when this button is clicked. |
