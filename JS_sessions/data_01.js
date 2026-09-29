@@ -77,5 +77,18 @@ export const checklistData = [
             { id: 802, task: "prompt()", completed: false },
             { id: 803, task: "confirm()", completed: false },
         ]
+    },
+    {
+        id: 9,
+        task: "JS Operators",
+        completed: false,
+        subitems: [
+            { id: 901, task: "Arithmetic Operators", completed: false },
+            { id: 902, task: "Assignment Operators", completed: false },
+            { id: 903, task: "Comparison Operators", completed: false },
+            { id: 904, task: "Logical Operators", completed: false },
+            { id: 905, task: "Bitwise Operators", completed: false },
+            { id: 906, task: "Ternary Operator", completed: false }
+        ]
     }
 ];
