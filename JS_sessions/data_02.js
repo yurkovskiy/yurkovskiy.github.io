@@ -2,12 +2,14 @@
 export const checklistData = [
     { 
         id: 1, 
-        task: "Arrays", 
+        task: "Data Structures: Arrays / Object Literals", 
         completed: false,
         subitems: [
-            { id: 101, task: "Index", completed: false },
-            { id: 102, task: "Length", completed: false },
-            { id: 103, task: "Built-in methods", completed: false },
+            { id: 101, task: "Array: Index", completed: false },
+            { id: 102, task: "Array: Length", completed: false },
+            { id: 103, task: "Array: Built-in methods: push, pop, unshift, splice, includes, sort, map, ...", completed: false },
+            { id: 104, task: "Object Literals", completed: false },
+            { id: 105, task: "JSON data format / JSON built-in object", completed: false },
         ],
     },
     {
