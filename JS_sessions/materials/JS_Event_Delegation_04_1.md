@@ -272,3 +272,12 @@ window.addEventListener('popstate', () => {
 ### Коли делегування не підходить:
 * Для подій, які **не спливають** (`blur`, `focus`, `mouseenter`, `mouseleave`).
 * Коли обробник дуже ресурсоємний і спрацьовує часто (наприклад, `mousemove` на великій площі).
+
+
+```html
+<ul id="shopping-list">
+  <li data-item="apple">Яблука</li>
+  <li data-item="bread">Хліб</li>
+  <li data-item="milk">Молоко</li>
+</ul>
+```
