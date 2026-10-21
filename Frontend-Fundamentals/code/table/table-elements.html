@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML table elements reference</title>
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --text: #1d2733;
+    --muted: #5b6776;
+    --line: #cfd7e0;
+    --head: #e4ebf4;
+    --foot: #eef2f7;
+    --accent: #1f5fbf;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12171d;
+      --surface: #1a212a;
+      --text: #e6ebf1;
+      --muted: #97a3b2;
+      --line: #324050;
+      --head: #263241;
+      --foot: #212b37;
+      --accent: #6aa3f5;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 48px;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  h2 { font-size: 1.15rem; margin: 0 0 4px; }
+  .lead, .note { color: var(--muted); margin: 0 0 12px; }
+  .note { font-size: .92rem; }
+  section {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px 20px 20px;
+    margin: 0 0 20px;
+  }
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; background: var(--surface); }
+  caption { font-weight: 600; text-align: left; padding: 0 0 8px; caption-side: top; }
+  caption.bottom { caption-side: bottom; padding: 8px 0 0; font-weight: 400; color: var(--muted); }
+  th, td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
+  thead th { background: var(--head); }
+  tfoot td, tfoot th { background: var(--foot); font-weight: 600; }
+  tbody th[scope=row] { background: var(--foot); font-weight: 600; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .cols-demo col.hl { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+  code { background: var(--foot); padding: 1px 5px; border-radius: 4px; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>HTML table elements</h1>
+  <p class="lead">Every table tag in use: <code>&lt;table&gt; &lt;caption&gt; &lt;colgroup&gt; &lt;col&gt; &lt;thead&gt; &lt;tbody&gt; &lt;tfoot&gt; &lt;tr&gt; &lt;th&gt; &lt;td&gt;</code></p>
+
+  <section>
+    <h2>1. Full structure</h2>
+    <p class="note">Uses <code>caption</code>, <code>colgroup</code>/<code>col</code>, <code>thead</code>, multiple <code>tbody</code> groups, <code>tfoot</code>, and <code>th</code> with <code>scope</code>.</p>
+    <div class="scroll">
+      <table>
+        <caption>Quarterly sales by region (thousands of EUR)</caption>
+        <colgroup>
+          <col>
+          <col span="2" class="hl">
+          <col>
+        </colgroup>
+        <thead>
+          <tr>
+            <th scope="col">Region</th>
+            <th scope="col" class="num">Q1</th>
+            <th scope="col" class="num">Q2</th>
+            <th scope="col" class="num">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Poland</th><td class="num">120</td><td class="num">135</td><td class="num">255</td></tr>
+          <tr><th scope="row">Germany</th><td class="num">210</td><td class="num">198</td><td class="num">408</td></tr>
+        </tbody>
+        <tbody>
+          <tr><th scope="row">France</th><td class="num">175</td><td class="num">181</td><td class="num">356</td></tr>
+          <tr><th scope="row">Spain</th><td class="num">98</td><td class="num">110</td><td class="num">208</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><th scope="row">All regions</th><td class="num">603</td><td class="num">624</td><td class="num">1227</td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Column spanning (colspan)</h2>
+    <div class="scroll">
+      <table>
+        <caption>Opening hours</caption>
+        <thead>
+          <tr>
+            <th scope="col">Day</th>
+            <th scope="col" colspan="2">Hours</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th scope="col">Open</th>
+            <th scope="col">Close</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Monday to Friday</th><td>08:00</td><td>18:00</td></tr>
+          <tr><th scope="row">Saturday</th><td>09:00</td><td>14:00</td></tr>
+          <tr><th scope="row">Sunday</th><td colspan="2">Closed</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. Row spanning (rowspan)</h2>
+    <div class="scroll">
+      <table>
+        <caption>Course schedule</caption>
+        <thead>
+          <tr><th scope="col">Day</th><th scope="col">Time</th><th scope="col">Class</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="rowgroup" rowspan="2">Monday</th><td>09:00</td><td>Algebra</td></tr>
+          <tr><td>11:00</td><td>Physics</td></tr>
+          <tr><th scope="rowgroup" rowspan="3">Tuesday</th><td>09:00</td><td>Chemistry</td></tr>
+          <tr><td>11:00</td><td>History</td></tr>
+          <tr><td>13:00</td><td>Art</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>4. Both spans and multi-level headers</h2>
+    <p class="note">The top-left cell spans two rows and two columns; headers use <code>id</code> and <code>headers</code> for explicit association.</p>
+    <div class="scroll">
+      <table>
+        <caption>Phone plans compared</caption>
+        <thead>
+          <tr>
+            <td colspan="1" rowspan="2"></td>
+            <th id="basic" scope="colgroup" colspan="2">Basic</th>
+            <th id="pro" scope="colgroup" colspan="2">Pro</th>
+          </tr>
+          <tr>
+            <th id="b-m" scope="col">Monthly</th>
+            <th id="b-y" scope="col">Yearly</th>
+            <th id="p-m" scope="col">Monthly</th>
+            <th id="p-y" scope="col">Yearly</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th id="price" scope="row">Price</th>
+            <td headers="basic b-m price" class="num">9</td>
+            <td headers="basic b-y price" class="num">90</td>
+            <td headers="pro p-m price" class="num">19</td>
+            <td headers="pro p-y price" class="num">190</td>
+          </tr>
+          <tr>
+            <th id="data" scope="row">Data (GB)</th>
+            <td headers="basic b-m data" class="num">10</td>
+            <td headers="basic b-y data" class="num">10</td>
+            <td headers="pro p-m data" class="num">100</td>
+            <td headers="pro p-y data" class="num">100</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>5. Caption at the bottom, no thead</h2>
+    <div class="scroll">
+      <table>
+        <caption class="bottom">Table 5. A simple table with the caption placed below.</caption>
+        <tbody>
+          <tr><th scope="row">Name</th><td>Anna Kowalska</td></tr>
+          <tr><th scope="row">City</th><td>Warsaw</td></tr>
+          <tr><th scope="row">Role</th><td>Designer</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>6. Table with a nested table and rich cell content</h2>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th scope="col">Item</th><th scope="col">Details</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Link and list</th>
+            <td>
+              <a href="#">A link inside a cell</a>
+              <ul><li>First point</li><li>Second point</li></ul>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Nested table</th>
+            <td>
+              <table>
+                <thead><tr><th scope="col">Size</th><th scope="col">Stock</th></tr></thead>
+                <tbody>
+                  <tr><td>S</td><td>12</td></tr>
+                  <tr><td>M</td><td>0</td></tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+</body>
+</html>
