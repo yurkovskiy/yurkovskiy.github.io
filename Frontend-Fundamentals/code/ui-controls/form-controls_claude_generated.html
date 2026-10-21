@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML form controls reference</title>
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --text: #1d2733;
+    --muted: #5b6776;
+    --line: #cfd7e0;
+    --accent: #1f5fbf;
+    --accent-text: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12171d;
+      --surface: #1a212a;
+      --text: #e6ebf1;
+      --muted: #97a3b2;
+      --line: #324050;
+      --accent: #6aa3f5;
+      --accent-text: #0d1520;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 48px;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  .lead { color: var(--muted); margin: 0 0 24px; }
+  fieldset {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin: 0 0 20px;
+    padding: 16px 20px 20px;
+  }
+  legend { font-weight: 600; padding: 0 8px; }
+  .row { display: grid; grid-template-columns: 200px 1fr; gap: 6px 16px; align-items: center; margin-top: 12px; }
+  .row > label:first-child { color: var(--muted); font-size: .95rem; }
+  .inline { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  .inline label { display: inline-flex; align-items: center; gap: 6px; }
+  input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=button]):not([type=submit]):not([type=reset]):not([type=image]),
+  select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+  }
+  input[type=file]::file-selector-button { margin-right: 10px; }
+  input[type=range] { width: 100%; }
+  input[type=color] { width: 56px; height: 36px; padding: 2px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); }
+  button, input[type=button], input[type=submit], input[type=reset], input[type=image] { font: inherit; }
+  button, input[type=button], input[type=submit], input[type=reset] {
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+  }
+  button.primary, input[type=submit] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-text);
+  }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  output { font-variant-numeric: tabular-nums; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  @media (max-width: 560px) { .row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>HTML form controls</h1>
+  <p class="lead">Every standard <code>&lt;input&gt;</code> type, plus <code>&lt;button&gt;</code> and <code>&lt;select&gt;</code> variants, in one form.</p>
+
+  <form id="demo" action="#" method="post" enctype="multipart/form-data">
+
+    <fieldset>
+      <legend>Text inputs</legend>
+      <div class="row"><label for="text">text</label><input type="text" id="text" name="text" placeholder="Plain text"></div>
+      <div class="row"><label for="password">password</label><input type="password" id="password" name="password" placeholder="Hidden characters" autocomplete="new-password"></div>
+      <div class="row"><label for="email">email</label><input type="email" id="email" name="email" placeholder="name@example.com" multiple></div>
+      <div class="row"><label for="tel">tel</label><input type="tel" id="tel" name="tel" placeholder="+48 123 456 789"></div>
+      <div class="row"><label for="url">url</label><input type="url" id="url" name="url" placeholder="https://example.com"></div>
+      <div class="row"><label for="search">search</label><input type="search" id="search" name="search" placeholder="Search…"></div>
+      <div class="row"><label for="hidden-note">hidden</label><span>A hidden field is submitted but not shown.</span><input type="hidden" id="hidden-note" name="hidden_field" value="secret-value"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Numbers and ranges</legend>
+      <div class="row"><label for="number">number</label><input type="number" id="number" name="number" min="0" max="100" step="1" value="10"></div>
+      <div class="row"><label for="range">range</label>
+        <div><input type="range" id="range" name="range" min="0" max="100" value="40" oninput="rangeOut.value = this.value"> <output id="rangeOut">40</output></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Date and time</legend>
+      <div class="row"><label for="date">date</label><input type="date" id="date" name="date"></div>
+      <div class="row"><label for="time">time</label><input type="time" id="time" name="time"></div>
+      <div class="row"><label for="datetime-local">datetime-local</label><input type="datetime-local" id="datetime-local" name="datetime_local"></div>
+      <div class="row"><label for="month">month</label><input type="month" id="month" name="month"></div>
+      <div class="row"><label for="week">week</label><input type="week" id="week" name="week"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Choices</legend>
+      <div class="row"><span>checkbox</span>
+        <div class="inline">
+          <label><input type="checkbox" name="newsletter" value="yes" checked> Newsletter</label>
+          <label><input type="checkbox" name="terms" value="yes"> Accept terms</label>
+          <label><input type="checkbox" id="indeterminate" name="partial"> Indeterminate</label>
+        </div>
+      </div>
+      <div class="row"><span>radio</span>
+        <div class="inline">
+          <label><input type="radio" name="size" value="s"> Small</label>
+          <label><input type="radio" name="size" value="m" checked> Medium</label>
+          <label><input type="radio" name="size" value="l"> Large</label>
+        </div>
+      </div>
+      <div class="row"><label for="color">color</label><input type="color" id="color" name="color" value="#1f5fbf"></div>
+      <div class="row"><label for="file">file</label><input type="file" id="file" name="file"></div>
+      <div class="row"><label for="files">file (multiple, images)</label><input type="file" id="files" name="files" multiple accept="image/*"></div>
+      <div class="row"><label for="datalist-input">text with datalist</label>
+        <div>
+          <input type="text" id="datalist-input" name="browser" list="browsers" placeholder="Start typing a browser">
+          <datalist id="browsers"><option value="Chrome"><option value="Firefox"><option value="Safari"><option value="Edge"></datalist>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Select menus</legend>
+      <div class="row"><label for="select-single">Single select</label>
+        <select id="select-single" name="country">
+          <option value="">Choose a country…</option>
+          <option value="pl">Poland</option>
+          <option value="de">Germany</option>
+          <option value="fr">France</option>
+          <option value="us">United States</option>
+        </select>
+      </div>
+      <div class="row"><label for="select-group">Grouped options</label>
+        <select id="select-group" name="food">
+          <optgroup label="Fruit">
+            <option value="apple">Apple</option>
+            <option value="pear">Pear</option>
+          </optgroup>
+          <optgroup label="Vegetables">
+            <option value="carrot">Carrot</option>
+            <option value="leek">Leek</option>
+            <option value="beet" disabled>Beetroot (unavailable)</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="row"><label for="select-multi">Multiple select</label>
+        <select id="select-multi" name="languages" multiple size="4">
+          <option value="html" selected>HTML</option>
+          <option value="css">CSS</option>
+          <option value="js">JavaScript</option>
+          <option value="py">Python</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>States</legend>
+      <div class="row"><label for="readonly">readonly</label><input type="text" id="readonly" value="Can't edit, still submitted" readonly></div>
+      <div class="row"><label for="disabled">disabled</label><input type="text" id="disabled" value="Can't edit, not submitted" disabled></div>
+      <div class="row"><label for="required">required</label><input type="text" id="required" name="required" placeholder="Required field" required></div>
+      <div class="row"><label for="pattern">pattern (3 letters)</label><input type="text" id="pattern" name="code" pattern="[A-Za-z]{3}" title="Exactly three letters" placeholder="ABC"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Buttons</legend>
+      <div class="actions">
+        <button type="submit" class="primary">&lt;button&gt; submit</button>
+        <button type="reset">&lt;button&gt; reset</button>
+        <button type="button" onclick="alert('Button clicked')">&lt;button&gt; button</button>
+        <button type="button" disabled>&lt;button&gt; disabled</button>
+      </div>
+      <div class="actions" style="margin-top:12px">
+        <input type="submit" value="input submit">
+        <input type="reset" value="input reset">
+        <input type="button" value="input button" onclick="alert('Input button clicked')">
+        <input type="image" alt="input image submit" width="40" height="40"
+               src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' rx='6' fill='%231f5fbf'/%3E%3Ctext x='20' y='26' font-size='14' text-anchor='middle' fill='white' font-family='sans-serif'%3EImg%3C/text%3E%3C/svg%3E">
+      </div>
+    </fieldset>
+
+  </form>
+</main>
+<script>
+  document.getElementById('indeterminate').indeterminate = true;
+  document.getElementById('demo').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const data = new FormData(this);
+    const out = [];
+    for (const [k, v] of data.entries()) out.push(k + ' = ' + (v instanceof File ? v.name : v));
+    alert(out.join('\n'));
+  });
+</script>
+</body>
+</html>
