@@ -52,22 +52,7 @@ export const checklistData = [
             },
             {
                 id: 302,
-                task: 'Method #1: HTML <link> element with media attribute (<link rel="stylesheet" media="screen" />)',
-                completed: false,
-            },
-            {
-                id: 303,
-                task: "Method #2: HTML <style> tag scoped with media attribute",
-                completed: false,
-            },
-            {
-                id: 304,
-                task: "Method #3: CSS @import rule with media targets (@import url(...) screen)",
-                completed: false,
-            },
-            {
-                id: 305,
-                task: "Method #4: In-file conditional blocks using the @media at-rule",
+                task: 'How to add media information to CSS',
                 completed: false,
             },
         ],
@@ -121,16 +106,6 @@ export const checklistData = [
             },
             {
                 id: 503,
-                task: "Color depth, resolution (dpi/dppx), and monochrome capabilities",
-                completed: false,
-            },
-            {
-                id: 504,
-                task: "Display update frequency (update: fast | slow) and scripting detection (scripting: enabled)",
-                completed: false,
-            },
-            {
-                id: 505,
                 task: "Modern Media Queries Level 4 syntax: range syntax ((width >= 768px)) vs. min-width",
                 completed: false,
             },
