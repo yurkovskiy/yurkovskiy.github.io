@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Course Layout Components</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased font-sans selection:bg-indigo-500 selection:text-white">
+
+  <!-- ========================================================================= -->
+  <!-- 1. COURSE HIGHLIGHTS BENTO GRID                                           -->
+  <!-- ========================================================================= -->
+  <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div class="mb-14 text-center max-w-2xl mx-auto">
+      <span class="text-xs font-semibold tracking-widest uppercase text-indigo-400 bg-indigo-950/70 border border-indigo-800/60 px-3 py-1 rounded-full">
+        Program Architecture
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mt-4 text-white">
+        Engineered for Production Environments
+      </h2>
+      <p class="text-slate-400 mt-3 text-base sm:text-lg">
+        Replace passive reading with high-throughput systems, real-world constraints, and battle-tested industry practices.
+      </p>
+    </div>
+
+    <!-- Bento Grid Container -->
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 auto-rows-[minmax(180px,auto)]">
+      
+      <!-- Card 1: Large Featured (2 Cols, 2 Rows) -->
+      <div class="md:col-span-2 lg:col-span-2 md:row-span-2 rounded-2xl bg-slate-900/80 border border-slate-800 p-6 sm:p-8 flex flex-col justify-between hover:border-slate-700 transition duration-300 relative overflow-hidden group">
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-indigo-500/20 transition duration-500"></div>
+        <div>
+          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-400 bg-emerald-950/50 border border-emerald-800/40 px-2.5 py-1 rounded-md mb-4">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Production Sandbox
+          </span>
+          <h3 class="text-2xl font-bold text-white tracking-tight">
+            End-to-End Enterprise Capstone
+          </h3>
+          <p class="text-slate-400 mt-3 leading-relaxed text-sm sm:text-base">
+            Build and deploy an event-driven transactional microservices engine from scratch. Master fault-tolerance, distributed tracing, idempotency, and high-availability deployment cycles.
+          </p>
+        </div>
+
+        <!-- Metric Indicator -->
+        <div class="pt-6 border-t border-slate-800/80 mt-6 grid grid-cols-2 gap-4">
+          <div>
+            <div class="text-3xl sm:text-4xl font-black text-indigo-400">99.9%</div>
+            <div class="text-xs uppercase tracking-wider text-slate-500 font-medium mt-1">Target SLA Architecture</div>
+          </div>
+          <div>
+            <div class="text-3xl sm:text-4xl font-black text-white">100k+</div>
+            <div class="text-xs uppercase tracking-wider text-slate-500 font-medium mt-1">Simulated RPS Load</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Hands-on Focus (Metric) -->
+      <div class="rounded-2xl bg-slate-900/80 border border-slate-800 p-6 flex flex-col justify-between hover:border-slate-700 transition duration-300">
+        <div>
+          <div class="text-4xl font-black text-white tracking-tight">70<span class="text-indigo-400">%</span></div>
+          <h4 class="text-base font-semibold text-slate-200 mt-2">Active Engineering</h4>
+          <p class="text-xs text-slate-400 mt-1 leading-normal">
+            Rigorous coding labs, architectural reviews, and continuous debugging over passive lectures.
+          </p>
+        </div>
+        <div class="mt-4 flex gap-1.5">
+          <div class="h-1.5 flex-1 bg-indigo-500 rounded-full"></div>
+          <div class="h-1.5 flex-1 bg-indigo-500 rounded-full"></div>
+          <div class="h-1.5 flex-1 bg-indigo-500 rounded-full"></div>
+          <div class="h-1.5 w-1/4 bg-slate-800 rounded-full"></div>
+        </div>
+      </div>
+
+      <!-- Card 3: Feedback Loops -->
+      <div class="rounded-2xl bg-slate-900/80 border border-slate-800 p-6 flex flex-col justify-between hover:border-slate-700 transition duration-300">
+        <div>
+          <div class="w-10 h-10 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 font-semibold mb-3">
+            &lt;/&gt;
+          </div>
+          <h4 class="text-base font-semibold text-slate-200">Lead Architect Audits</h4>
+          <p class="text-xs text-slate-400 mt-1 leading-normal">
+            Line-by-line pull request reviews emphasizing clean code, algorithmic complexity, and defensive security.
+          </p>
+        </div>
+        <span class="text-xs text-slate-500 font-mono mt-4">1:1 Dedicated Feedback</span>
+      </div>
+
+      <!-- Card 4: Tech Ecosystem (2 Cols on Wide Screens) -->
+      <div class="md:col-span-2 lg:col-span-2 rounded-2xl bg-slate-900/80 border border-slate-800 p-6 flex flex-col justify-between hover:border-slate-700 transition duration-300">
+        <div>
+          <h4 class="text-base font-semibold text-white">Full-Spectrum Enterprise Stack</h4>
+          <p class="text-xs text-slate-400 mt-1">
+            Work directly with the platforms, pipelines, and runtimes used by Fortune 500 tech teams.
+          </p>
+        </div>
+        
+        <!-- Tech Pills -->
+        <div class="flex flex-wrap gap-2 mt-4">
+          <span class="px-2.5 py-1 text-xs font-mono font-medium rounded-md bg-slate-800/80 text-slate-300 border border-slate-700/60">Docker</span>
+          <span class="px-2.5 py-1 text-xs font-mono font-medium rounded-md bg-slate-800/80 text-slate-300 border border-slate-700/60">Kubernetes</span>
+          <span class="px-2.5 py-1 text-xs font-mono font-medium rounded-md bg-slate-800/80 text-slate-300 border border-slate-700/60">Apache Kafka</span>
+          <span class="px-2.5 py-1 text-xs font-mono font-medium rounded-md bg-slate-800/80 text-slate-300 border border-slate-700/60">PostgreSQL</span>
+          <span class="px-2.5 py-1 text-xs font-mono font-medium rounded-md bg-slate-800/80 text-slate-300 border border-slate-700/60">Redis</span>
+          <span class="px-2.5 py-1 text-xs font-mono font-medium rounded-md bg-slate-800/80 text-slate-300 border border-slate-700/60">AWS Cloud</span>
+          <span class="px-2.5 py-1 text-xs font-mono font-medium rounded-md bg-slate-800/80 text-slate-300 border border-slate-700/60">GitHub Actions</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 2. CURRICULUM TIMELINE WITH ACCORDION SECTIONS                            -->
+  <!-- ========================================================================= -->
+  <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+    <div class="mb-14 text-center max-w-2xl mx-auto">
+      <span class="text-xs font-semibold tracking-widest uppercase text-indigo-400 bg-indigo-950/70 border border-indigo-800/60 px-3 py-1 rounded-full">
+        Roadmap
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mt-4 text-white">
+        Curriculum Progression
+      </h2>
+      <p class="text-slate-400 mt-3 text-base sm:text-lg">
+        A structured, phase-by-phase acceleration path built to scale from clean abstractions to multi-region cloud systems.
+      </p>
+    </div>
+
+    <!-- Timeline Wrapper -->
+    <div class="relative pl-6 sm:pl-10 space-y-8 before:absolute before:left-2 sm:before:left-3.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-800">
+
+      <!-- Timeline Phase 01 -->
+      <div class="relative group">
+        <!-- Timeline Marker Node -->
+        <div class="absolute -left-6 sm:-left-10 top-1.5 w-5 h-5 rounded-full bg-slate-950 border-2 border-indigo-500 flex items-center justify-center">
+          <div class="w-2 h-2 rounded-full bg-indigo-400"></div>
+        </div>
+
+        <!-- Accordion Item (Native HTML details) -->
+        <details class="group/item rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition duration-200 overflow-hidden" open>
+          <summary class="p-5 sm:p-6 cursor-pointer list-none flex items-center justify-between gap-4 select-none">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+              <span class="text-xs font-mono uppercase tracking-wider text-indigo-400 font-semibold">
+                Phase 01 &bull; Weeks 1–4
+              </span>
+              <h3 class="text-lg font-bold text-white">
+                Core Architecture, Concurrency & Data Structures
+              </h3>
+            </div>
+            <!-- Toggle Icon -->
+            <svg class="w-5 h-5 text-slate-400 transition-transform duration-300 group-open/item:rotate-180 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+
+          <div class="px-5 pb-6 sm:px-6 text-slate-400 text-sm border-t border-slate-800/60 pt-4">
+            <p class="mb-4 leading-relaxed">
+              Ground your understanding of low-overhead memory models, high-throughput asynchronous execution, and standard enterprise design patterns.
+            </p>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <li class="flex items-center gap-2">
+                <span class="text-indigo-400 font-mono">&#x2713;</span> Thread safety, locks, and thread pooling
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-indigo-400 font-mono">&#x2713;</span> Clean Architecture & Domain-Driven Design (DDD)
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-indigo-400 font-mono">&#x2713;</span> Memory leak detection and CPU profile audits
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-indigo-400 font-mono">&#x2713;</span> SOLID principles at enterprise scale
+              </li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- Timeline Phase 02 -->
+      <div class="relative group">
+        <!-- Timeline Marker Node -->
+        <div class="absolute -left-6 sm:-left-10 top-1.5 w-5 h-5 rounded-full bg-slate-950 border-2 border-indigo-500/60 flex items-center justify-center">
+          <div class="w-1.5 h-1.5 rounded-full bg-slate-500"></div>
+        </div>
+
+        <details class="group/item rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition duration-200 overflow-hidden">
+          <summary class="p-5 sm:p-6 cursor-pointer list-none flex items-center justify-between gap-4 select-none">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+              <span class="text-xs font-mono uppercase tracking-wider text-indigo-400 font-semibold">
+                Phase 02 &bull; Weeks 5–8
+              </span>
+              <h3 class="text-lg font-bold text-white">
+                Distributed Systems & Event-Driven Design
+              </h3>
+            </div>
+            <svg class="w-5 h-5 text-slate-400 transition-transform duration-300 group-open/item:rotate-180 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+
+          <div class="px-5 pb-6 sm:px-6 text-slate-400 text-sm border-t border-slate-800/60 pt-4">
+            <p class="mb-4 leading-relaxed">
+              Transition monolithic solutions to distributed microservices. Tackle asynchronous event streams, data consistency guarantees, and network boundary failures.
+            </p>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <li class="flex items-center gap-2">
+                <span class="text-indigo-400 font-mono">&#x2713;</span> Apache Kafka streaming and consumer groups
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-indigo-400 font-mono">&#x2713;</span> Outbox Pattern & Saga distributed transactions
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-indigo-400 font-mono">&#x2713;</span> Distributed caching strategies with Redis
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-indigo-400 font-mono">&#x2713;</span> Circuit breaking and resilient RPC calls
+              </li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- Timeline Phase 03 -->
+      <div class="relative group">
+        <!-- Timeline Marker Node -->
+        <div class="absolute -left-6 sm:-left-10 top-1.5 w-5 h-5 rounded-full bg-slate-950 border-2 border-indigo-500/60 flex items-center justify-center">
+          <div class="w-1.5 h-1.5 rounded-full bg-slate-500"></div>
+        </div>
+
+        <details class="group/item rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition duration-200 overflow-hidden">
+          <summary class="p-5 sm:p-6 cursor-pointer list-none flex items-center justify-between gap-4 select-none">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+              <span class="text-xs font-mono uppercase tracking-wider text-indigo-400 font-semibold">
+                Phase 03 &bull; Weeks 9–12
+              </span>
+              <h3 class="text-lg font-bold text-white">
+                Cloud Native DevOps, Observability & Capstone
+              </h3>
+            </div>
+            <svg class="w-5 h-5 text-slate-400 transition-transform duration-300 group-open/item:rotate-180 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+
+          <div class="px-5 pb-6 sm:px-6 text-slate-400 text-sm border-t border-slate-800/60 pt-4">
+            <p class="mb-4 leading-relaxed">
+              Deploy your multi-service capstone onto managed Kubernetes clusters. Configure CI/CD automated pipelines, real-time telemetry dashboards, and alerting policies.
+            </p>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <li class="flex items-center gap-2">
+                <span class="text-indigo-400 font-mono">&#x2713;</span> Helm charts and multi-stage container builds
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-indigo-400 font-mono">&#x2713;</span> Prometheus & Grafana APM observability
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-indigo-400 font-mono">&#x2713;</span> Zero-downtime blue/green deployment strategy
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-indigo-400 font-mono">&#x2713;</span> Live Capstone defense and architecture review
+              </li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
