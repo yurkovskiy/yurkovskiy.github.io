@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="uk" data-bs-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Computer Vision Engineering: від обробки зображень до production-рішень · SoftServe</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ Theme: override Bootstrap variables ============ */
+  :root, [data-bs-theme=dark]{
+    --ese-bg:#07070f;
+    --ese-bg-2:#0d0d1a;
+    --ese-panel:#12121f;
+    --ese-panel-2:#171728;
+    --ese-line:#26263d;
+    --ese-line-2:#34345a;
+    --ese-muted:#9a9ab5;
+    --ese-dim:#6b6b88;
+    --ese-violet:#7c3aed;
+    --ese-violet-2:#a78bfa;
+    --ese-lime:#c6f432;
+    --ese-grad:linear-gradient(135deg,#7c3aed 0%,#5b21f5 50%,#4f46e5 100%);
+    --ese-grad-lime:linear-gradient(135deg,#22c55e 0%,#c6f432 100%);
+    --ese-mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+
+    --bs-body-bg:var(--ese-bg);
+    --bs-body-color:#ececf5;
+    --bs-body-font-family:'Manrope',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --bs-secondary-color:var(--ese-muted);
+    --bs-border-color:var(--ese-line);
+    --bs-primary:#7c3aed;
+    --bs-primary-rgb:124,58,237;
+    --bs-link-color:#a78bfa;
+    --bs-link-color-rgb:167,139,250;
+    --bs-link-hover-color-rgb:198,244,50;
+    --bs-link-hover-color:#c6f432;
+    --bs-border-radius:12px;
+    --bs-border-radius-lg:16px;
+    --bs-border-radius-xl:20px;
+  }
+  html{scroll-behavior:smooth}
+  body{-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.6}
+  h1,h2,h3,h4,h5,.h1,.h2,.h3,.h4,.h5{font-weight:800;letter-spacing:-.02em;line-height:1.1}
+  .text-muted-ese{color:var(--ese-muted)!important}
+  .text-dim{color:var(--ese-dim)!important}
+  .text-lime{color:var(--ese-lime)!important}
+  .text-violet{color:var(--ese-violet-2)!important}
+  .font-mono{font-family:var(--ese-mono)!important}
+  .bg-ese-2{background:var(--ese-bg-2)!important}
+  .border-ese{border-color:var(--ese-line)!important}
+  .grad-text{background:linear-gradient(90deg,#a78bfa,#c6f432);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  .section{padding:110px 0;position:relative}
+  @media (max-width:991.98px){.section{padding:80px 0}}
+  .section-alt{background:var(--ese-bg-2);border-top:1px solid var(--ese-line);border-bottom:1px solid var(--ese-line)}
+  .section-title{font-size:clamp(32px,4.4vw,52px)}
+  .lead{color:var(--ese-muted);font-size:1.125rem;font-weight:400}
+  .eyebrow{font-family:var(--ese-mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ese-lime);display:inline-flex;align-items:center;gap:10px;margin-bottom:18px}
+  .eyebrow::before{content:"";width:28px;height:1px;background:var(--ese-lime)}
+  .grid-bg{position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(var(--ese-line) 1px,transparent 1px),linear-gradient(90deg,var(--ese-line) 1px,transparent 1px);
+    background-size:56px 56px;opacity:.25;
+    mask-image:radial-gradient(ellipse at 50% 0%,#000 0%,transparent 70%);
+    -webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000 0%,transparent 70%)}
+
+  /* ============ Buttons ============ */
+  .btn{font-weight:700;padding:.85rem 1.6rem;border-radius:12px;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
+  .btn-sm{padding:.55rem 1.1rem}
+  .btn-lime{--bs-btn-bg:#c6f432;--bs-btn-color:#0b0b14;--bs-btn-border-color:#c6f432;
+    --bs-btn-hover-bg:#d4ff4a;--bs-btn-hover-color:#0b0b14;--bs-btn-hover-border-color:#d4ff4a;
+    --bs-btn-active-bg:#b5e020;--bs-btn-active-color:#0b0b14;--bs-btn-active-border-color:#b5e020}
+  .btn-lime:hover{transform:translateY(-2px);box-shadow:0 10px 30px -8px rgba(198,244,50,.55)}
+  .btn-outline-ese{--bs-btn-color:#ececf5;--bs-btn-border-color:var(--ese-line-2);--bs-btn-bg:rgba(255,255,255,.02);
+    --bs-btn-hover-bg:rgba(124,58,237,.12);--bs-btn-hover-border-color:#a78bfa;--bs-btn-hover-color:#fff;
+    --bs-btn-active-bg:rgba(124,58,237,.2);--bs-btn-active-border-color:#a78bfa}
+
+  /* ============ Navbar ============ */
+  .navbar-ese{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(7,7,15,.75);border-bottom:1px solid var(--ese-line)}
+  .navbar-ese .navbar-brand{font-size:22px;font-weight:500;letter-spacing:-.02em}
+  .navbar-ese .navbar-brand b{font-weight:800}
+  .navbar-ese .nav-link{color:var(--ese-muted);font-weight:600;font-size:14px}
+  .navbar-ese .nav-link:hover,.navbar-ese .nav-link.active{color:#fff}
+  .navbar-ese .navbar-toggler{border-color:var(--ese-line-2)}
+  .navbar-ese .navbar-toggler:focus{box-shadow:0 0 0 3px rgba(124,58,237,.35)}
+
+  /* ============ Hero ============ */
+  .hero{padding:170px 0 110px;overflow:hidden}
+  @media (max-width:991.98px){.hero{padding:130px 0 80px}}
+  .hero::after{content:"";position:absolute;width:820px;height:820px;right:-260px;top:-260px;border-radius:50%;
+    background:radial-gradient(circle,rgba(124,58,237,.38),transparent 65%);filter:blur(20px);pointer-events:none}
+  .hero::before{content:"";position:absolute;width:520px;height:520px;left:-200px;bottom:-200px;border-radius:50%;
+    background:radial-gradient(circle,rgba(198,244,50,.12),transparent 65%);pointer-events:none}
+  .hero .container{position:relative;z-index:1}
+  .hero h1{font-size:clamp(40px,6vw,76px);text-transform:uppercase}
+  .chip{font-family:var(--ese-mono);font-size:13px;font-weight:400;padding:7px 14px;border:1px solid var(--ese-line-2);border-radius:999px;color:var(--ese-muted);background:rgba(255,255,255,.02)}
+  .chip.on{border-color:rgba(198,244,50,.4);color:var(--ese-lime)}
+
+  .sandbox{background:linear-gradient(180deg,var(--ese-panel-2),var(--ese-panel));border:1px solid var(--ese-line-2);border-radius:22px;position:relative;box-shadow:0 30px 80px -30px rgba(124,58,237,.5)}
+  .sandbox::before{content:"";position:absolute;inset:-1px;border-radius:22px;padding:1px;background:linear-gradient(135deg,rgba(167,139,250,.7),transparent 40%,transparent 60%,rgba(198,244,50,.5));
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+  .dots i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+  .tag{font-family:var(--ese-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:6px;background:rgba(198,244,50,.1);color:var(--ese-lime);border:1px solid rgba(198,244,50,.25);font-weight:500}
+  .cd{background:var(--ese-bg);border:1px solid var(--ese-line);border-radius:12px;padding:14px 4px;text-align:center}
+  .cd b{display:block;font-family:var(--ese-mono);font-size:30px;font-weight:700;line-height:1;margin-bottom:6px}
+  .cd small{font-size:11px;color:var(--ese-dim);text-transform:uppercase;letter-spacing:.08em}
+  @media (max-width:575.98px){.cd b{font-size:24px}}
+  .stat b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .stat span{font-size:12px;color:var(--ese-muted);line-height:1.35;display:block}
+  .stat-divider + .stat-divider{border-left:1px solid var(--ese-line)}
+
+  /* ============ Cards ============ */
+  .card-ese{--bs-card-bg:var(--ese-panel);--bs-card-border-color:var(--ese-line);--bs-card-border-radius:16px;--bs-card-spacer-y:1.75rem;--bs-card-spacer-x:1.75rem;
+    transition:border-color .25s,transform .25s,background .25s}
+  .card-ese:hover{border-color:var(--ese-line-2);transform:translateY(-4px);background:var(--ese-panel-2)}
+  .card-ese .num{position:absolute;top:24px;right:24px;font-family:var(--ese-mono);font-size:12px;color:var(--ese-dim)}
+  .ico{width:46px;height:46px;border-radius:12px;display:inline-grid;place-items:center;font-family:var(--ese-mono);font-weight:700;font-size:18px;
+    background:rgba(124,58,237,.15);color:var(--ese-violet-2);border:1px solid rgba(124,58,237,.35);flex-shrink:0}
+  .ico.lime{background:rgba(198,244,50,.1);color:var(--ese-lime);border-color:rgba(198,244,50,.3)}
+  .ico-sm{width:40px;height:40px;font-size:15px}
+
+  .quote{border-left:3px solid var(--ese-lime);padding:6px 0 6px 22px;font-size:22px;font-weight:700;line-height:1.35}
+  .tech span{font-family:var(--ese-mono);font-size:12px;padding:5px 10px;border-radius:6px;background:var(--ese-bg);border:1px solid var(--ese-line);color:var(--ese-muted)}
+
+  /* ============ Roadmap phases ============ */
+  .phase{overflow:hidden}
+  .phase::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--ese-grad)}
+  .phase.p2::before{background:var(--ese-grad-lime)}
+  .phase:hover{transform:none}
+  .phase .list-group{--bs-list-group-bg:var(--ese-bg);--bs-list-group-border-color:var(--ese-line);gap:10px}
+  .phase .list-group-item{border-radius:10px!important;border-width:1px!important;font-weight:600;display:flex;gap:12px;align-items:flex-start}
+  .phase .list-group-item i{color:var(--ese-violet-2)}
+  .phase.p2 .list-group-item i{color:var(--ese-lime)}
+  .extras{background:linear-gradient(135deg,rgba(124,58,237,.14),rgba(198,244,50,.06));border:1px solid var(--ese-line-2);border-radius:20px}
+  .extras .badge{font-size:14px;font-weight:500;padding:9px 14px;border-radius:999px;background:rgba(7,7,15,.6);border:1px solid var(--ese-line-2);color:#ececf5;white-space:normal;text-align:left}
+  .extras .badge i{color:var(--ese-lime)}
+
+  /* ============ Tabs (nav-pills) ============ */
+  .nav-pills-ese{background:var(--ese-panel);border:1px solid var(--ese-line);border-radius:14px;padding:6px;display:inline-flex;gap:6px}
+  .nav-pills-ese .nav-link{color:var(--ese-muted);font-weight:700;font-size:14px;border-radius:10px;padding:10px 18px}
+  .nav-pills-ese .nav-link.active{background:var(--ese-violet);color:#fff}
+  .nav-pills-ese .nav-link.active.lime{background:var(--ese-lime);color:#0b0b14}
+
+  /* ============ Accordion ============ */
+  .accordion-ese{--bs-accordion-bg:var(--ese-panel);--bs-accordion-border-color:var(--ese-line);--bs-accordion-border-radius:14px;--bs-accordion-inner-border-radius:14px;
+    --bs-accordion-btn-color:#ececf5;--bs-accordion-active-color:#fff;--bs-accordion-active-bg:var(--ese-panel);
+    --bs-accordion-btn-focus-box-shadow:0 0 0 3px rgba(124,58,237,.3);--bs-accordion-btn-padding-y:1.35rem;--bs-accordion-btn-padding-x:1.6rem;
+    --bs-accordion-body-padding-x:1.6rem}
+  .accordion-ese .accordion-item{border:1px solid var(--ese-line);border-radius:14px!important;margin-bottom:12px;overflow:hidden}
+  .accordion-ese .accordion-item:has(.show){border-color:var(--ese-line-2)}
+  .accordion-ese .accordion-button{font-weight:700;font-size:17px;gap:18px}
+  .accordion-ese .accordion-button:not(.collapsed){box-shadow:none}
+  [data-bs-theme=dark] .accordion-ese .accordion-button::after,[data-bs-theme=dark] .accordion-faq .accordion-button::after{--bs-accordion-btn-icon:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%239a9ab5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");--bs-accordion-btn-active-icon:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23c6f432' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e")}
+  .accordion-ese .idx{font-family:var(--ese-mono);font-size:13px;color:var(--ese-violet-2);min-width:26px}
+  .accordion-ese .accordion-body{color:var(--ese-muted);padding-top:0}
+  @media (min-width:768px){.accordion-ese .accordion-body{padding-left:4.6rem}}
+  .arrow-list{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+  .arrow-list li{position:relative;padding-left:22px}
+  .arrow-list li::before{content:"→";position:absolute;left:0;color:var(--ese-lime);font-family:var(--ese-mono)}
+  .check-list{list-style:none;padding:0;margin:0}
+  .check-list li{position:relative;padding-left:24px}
+  .check-list li::before{content:"✓";position:absolute;left:0;color:var(--ese-lime);font-family:var(--ese-mono);font-weight:700}
+  .summary-box{border-radius:16px;background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(124,58,237,.04));border:1px solid rgba(167,139,250,.35)}
+  .track .lang{font-family:var(--ese-mono);font-size:30px;font-weight:700;color:var(--ese-lime)}
+  .track:hover{border-color:rgba(198,244,50,.45)}
+
+  /* FAQ accordion: flush style */
+  .accordion-faq{--bs-accordion-bg:transparent;--bs-accordion-border-color:var(--ese-line);--bs-accordion-btn-color:#ececf5;--bs-accordion-active-color:var(--ese-violet-2);
+    --bs-accordion-active-bg:transparent;--bs-accordion-btn-focus-box-shadow:none;--bs-accordion-btn-padding-x:0;--bs-accordion-body-padding-x:0;--bs-accordion-btn-padding-y:1.35rem}
+  .accordion-faq .accordion-button{font-weight:700;font-size:17px}
+  .accordion-faq .accordion-body{color:var(--ese-muted);padding-right:2.5rem;padding-top:0}
+
+  /* ============ Benefits ============ */
+  .benefit h3{font-size:16px;margin:0}
+  .benefit p{font-size:14.5px;line-height:1.5}
+  .benefit .bi{font-size:20px;color:var(--ese-violet-2)}
+  .benefit.hl{background:linear-gradient(160deg,rgba(124,58,237,.25),var(--ese-panel) 70%);border-color:rgba(167,139,250,.4)}
+  .benefit.hl .bi{color:var(--ese-lime)}
+  .notice{border:1px dashed rgba(198,244,50,.45);background:rgba(198,244,50,.05);border-radius:16px}
+  .notice .bi{font-size:28px;color:var(--ese-lime)}
+
+  /* ============ Mentors ============ */
+  .mentor{overflow:hidden;--bs-card-spacer-y:1.25rem;--bs-card-spacer-x:1.4rem}
+  .mentor .photo{aspect-ratio:4/4.3;background:var(--ese-grad);display:grid;place-items:center;font-size:72px;font-weight:800;color:rgba(255,255,255,.9);letter-spacing:-.04em;position:relative}
+  .mentor .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .mentor.alt .photo{background:var(--ese-grad-lime);color:rgba(11,11,20,.85)}
+
+  /* ============ Price ============ */
+  .price-card{border-radius:24px;overflow:hidden;border:1px solid var(--ese-line-2);background:var(--ese-panel)}
+  .price-left{background:var(--ese-grad);position:relative;overflow:hidden}
+  .price-left::after{content:"";position:absolute;right:-80px;bottom:-80px;width:260px;height:260px;border-radius:50%;border:40px solid rgba(255,255,255,.07)}
+  .price-left .tag{background:rgba(7,7,15,.35);border-color:rgba(255,255,255,.2);color:#fff}
+  .price-big{font-size:clamp(44px,5vw,64px);font-weight:800;letter-spacing:-.03em;color:var(--ese-lime);line-height:1}
+  .installments span{font-family:var(--ese-mono);font-size:12px;padding:6px 9px;border-radius:6px;background:var(--ese-bg);border:1px solid var(--ese-line);color:var(--ese-muted)}
+  .installments span:first-child{border-color:rgba(198,244,50,.45);color:var(--ese-lime)}
+
+  /* ============ Skill Gym ============ */
+  .gym-inner{border-radius:24px;background:radial-gradient(circle at 85% 20%,rgba(124,58,237,.45),transparent 50%),linear-gradient(135deg,#1a0b3d,#0d0d1a);border:1px solid var(--ese-line-2)}
+  .gym-item{border-radius:12px;background:rgba(7,7,15,.55);border:1px solid var(--ese-line);font-size:14.5px;color:var(--ese-muted);height:100%}
+  .gym-item b{color:#ececf5;display:block;font-size:15px}
+
+  /* ============ Form ============ */
+  .form-ese{background:var(--ese-panel);border:1px solid var(--ese-line-2);border-radius:22px}
+  .form-ese .form-label{font-family:var(--ese-mono);font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--ese-muted)}
+  .form-ese .form-control{background:var(--ese-bg);border-color:var(--ese-line-2);color:#ececf5;padding:.85rem 1rem;border-radius:10px}
+  .form-ese .form-control:focus{border-color:var(--ese-violet-2);box-shadow:0 0 0 3px rgba(124,58,237,.25)}
+  .form-ese .form-check-input{background-color:var(--ese-bg);border-color:var(--ese-line-2)}
+  .form-ese .form-check-input:checked{background-color:var(--ese-lime);border-color:var(--ese-lime);
+    --bs-form-check-bg-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%230b0b14' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e")}
+  .form-ese .form-check-label{font-size:14px;color:var(--ese-muted)}
+  .form-ese .form-check-label a{color:#ececf5;font-weight:700}
+
+  /* ============ Footer ============ */
+  footer h4{font-family:var(--ese-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ese-dim);font-weight:500}
+  footer a{text-decoration:none;color:var(--ese-muted);font-size:14.5px}
+  footer a:hover{color:var(--ese-lime)}
+  footer address{color:var(--ese-muted);font-size:14.5px;line-height:1.7}
+
+  /* ============ Floating CTA + reveal ============ */
+  .float-cta{position:fixed;right:22px;bottom:22px;z-index:1030;box-shadow:0 14px 40px -10px rgba(198,244,50,.5)}
+  @media (max-width:575.98px){.float-cta{right:14px;bottom:14px}}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+  /* ============ Computer Vision page additions ============ */
+  .hero h1{font-size:clamp(38px,5.2vw,68px)}
+  .hero h1 .h1-sub{font-size:.62em;text-transform:none;letter-spacing:-.02em;margin-top:.25em;line-height:1.12}
+  .breadcrumb-ese{--bs-breadcrumb-divider-color:var(--ese-dim);--bs-breadcrumb-item-active-color:var(--ese-lime);font-family:var(--ese-mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+  .breadcrumb-ese a{color:var(--ese-muted);text-decoration:none}
+  .breadcrumb-ese a:hover{color:#fff}
+  .tag-hot{background:#0b0b14;color:#fff;border-color:rgba(255,255,255,.35)}
+  .link-lime{color:var(--ese-lime);text-decoration:none}
+  .link-lime:hover{color:#fff}
+
+  .video-frame{border-radius:20px;overflow:hidden;border:1px solid var(--ese-line-2);box-shadow:0 30px 80px -30px rgba(124,58,237,.55)}
+  .video-frame iframe{border:0}
+  .video-placeholder{display:flex;flex-direction:column;justify-content:center;padding:8%;text-decoration:none;color:#fff;
+    background:radial-gradient(circle at 80% 30%,rgba(34,211,238,.55),transparent 45%),radial-gradient(circle at 20% 90%,rgba(198,244,50,.35),transparent 40%),linear-gradient(135deg,#3b0fd1,#7c3aed 45%,#0ea5a4)}
+  .vp-label{position:absolute;top:18px;left:22px;opacity:.85}
+  .vp-title{font-size:clamp(28px,4.4vw,52px);font-weight:800;line-height:1;text-transform:uppercase;letter-spacing:-.02em}
+  .vp-sub{font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin-top:14px;opacity:.85}
+  .vp-play{position:absolute;right:8%;bottom:12%;width:76px;height:76px;border-radius:50%;background:var(--ese-lime);color:#0b0b14;display:grid;place-items:center;font-size:38px;transition:transform .25s,box-shadow .25s;box-shadow:0 0 0 10px rgba(198,244,50,.18)}
+  .video-placeholder:hover .vp-play{transform:scale(1.08);box-shadow:0 0 0 16px rgba(198,244,50,.14)}
+
+  .module{display:flex;gap:18px;height:100%;padding:22px 24px;border-radius:14px;background:var(--ese-panel);border:1px solid var(--ese-line);transition:border-color .25s,transform .25s,background .25s}
+  .module:hover{border-color:rgba(167,139,250,.5);background:var(--ese-panel-2);transform:translateY(-3px)}
+  .module.lime:hover{border-color:rgba(198,244,50,.45)}
+  .module h3{font-size:16.5px;margin-bottom:6px}
+  .module p{color:var(--ese-muted);font-size:14.5px;margin:0;line-height:1.55}
+  .m-num{font-family:var(--ese-mono);font-weight:700;font-size:14px;color:var(--ese-violet-2);flex-shrink:0;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:rgba(124,58,237,.14);border:1px solid rgba(124,58,237,.35)}
+  .module.lime .m-num{color:var(--ese-lime);background:rgba(198,244,50,.08);border-color:rgba(198,244,50,.3)}
+
+  .capstone{border-radius:20px;position:relative;overflow:hidden;background:radial-gradient(circle at 90% 10%,rgba(198,244,50,.16),transparent 45%),linear-gradient(135deg,rgba(124,58,237,.22),var(--ese-panel) 65%);border:1px solid rgba(167,139,250,.4)}
+  .cap-opt{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;padding:10px 14px;border-radius:10px;background:rgba(7,7,15,.6);border:1px solid var(--ese-line-2)}
+  .cap-opt i{color:var(--ese-lime)}
+
+  .fact{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:10px;background:var(--ese-panel);border:1px solid var(--ese-line);font-size:14.5px;color:var(--ese-muted)}
+  .fact i{color:var(--ese-lime);font-size:17px}
+  .accordion-ese .idx i{font-size:16px}
+  .faq-item{padding:14px 0;border-bottom:1px solid var(--ese-line)}
+  .faq-item:first-child{padding-top:0}
+  .faq-item:last-child{border-bottom:0;padding-bottom:0}
+
+  .notice .bi-heart-fill{font-size:24px;color:var(--ese-lime)}
+  .notice a{color:var(--ese-lime)}
+
+  .subscribe .form-control{background:var(--ese-bg);border-color:var(--ese-line-2);color:#ececf5;font-size:16px}
+  .subscribe .form-control:focus{border-color:var(--ese-violet-2);box-shadow:0 0 0 3px rgba(124,58,237,.25)}
+  .subscribe .btn{border-radius:0 12px 12px 0}
+  .subscribe .form-control{border-radius:12px 0 0 12px}
+
+  .contact-card{border-radius:20px;background:var(--ese-panel);border:1px solid var(--ese-line);transition:border-color .25s,transform .25s}
+  .contact-card:hover{transform:translateY(-4px);border-color:var(--ese-violet-2)}
+  .contact-card .eyebrow{display:flex}
+  .c-ico{width:72px;height:72px;border-radius:20px;display:grid;place-items:center;font-size:30px;flex-shrink:0;background:var(--ese-grad);color:#fff;box-shadow:0 14px 30px -12px rgba(124,58,237,.8)}
+  .contact-card.alt .c-ico{background:linear-gradient(135deg,#a21caf,#7c3aed)}
+  .mentor .photo{aspect-ratio:4/3.6}
+</style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="90" tabindex="0">
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-expand-lg fixed-top navbar-ese" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="#top">soft<b>serve</b></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Меню">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav mx-auto gap-lg-3 my-3 my-lg-0">
+        <li class="nav-item"><a class="nav-link" href="#about">Про курс</a></li>
+        <li class="nav-item"><a class="nav-link" href="#program">Програма</a></li>
+        <li class="nav-item"><a class="nav-link" href="#details">Деталі</a></li>
+        <li class="nav-item"><a class="nav-link" href="#benefits">Переваги</a></li>
+        <li class="nav-item"><a class="nav-link" href="#price">Вартість</a></li>
+      </ul>
+      <a href="#price" class="btn btn-lime btn-sm">Реєстрація</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero section" id="top">
+  <div class="grid-bg"></div>
+  <div class="container">
+    <div class="row align-items-center g-4 g-lg-5">
+      <div class="col-lg-7">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-ese mb-3">
+            <li class="breadcrumb-item"><a href="#">Курси</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Robotics</li>
+          </ol>
+        </nav>
+        <h1 class="mb-4">Computer Vision Engineering:<span class="d-block grad-text h1-sub">від обробки зображень до production-рішень</span></h1>
+        <p class="lead mb-4 pe-lg-5">Опануй на практиці Computer Vision Engineering: від OpenCV і YOLO до оптимізації та розгортання.</p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="#price" class="btn btn-lime">Зареєструватися <i class="bi bi-arrow-right ms-1"></i></a>
+          <a href="#program" class="btn btn-outline-ese">Переглянути програму</a>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mt-4 pt-2">
+          <span class="badge chip on">OpenCV</span>
+          <span class="badge chip on">YOLO</span>
+          <span class="badge chip on">PyTorch</span>
+          <span class="badge chip">ONNX</span>
+          <span class="badge chip">MediaPipe</span>
+          <span class="badge chip">FastAPI</span>
+          <span class="badge chip">Docker</span>
+          <span class="badge chip">OpenVINO</span>
+          <span class="badge chip">TensorRT</span>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <aside class="sandbox p-4 reveal">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div>
+            <span class="tag tag-hot">Black Friday · −10%</span>
+          </div>
+          <h3 class="h4 mb-1">До старту курсу</h3>
+          <p class="text-muted-ese mb-4"><i class="bi bi-calendar3 me-1"></i><strong class="text-white">30.11.2026 – 29.01.2027</strong></p>
+          <div class="row g-2 mb-4" aria-live="polite">
+            <div class="col-3"><div class="cd"><b id="cd-d">--</b><small>Днів</small></div></div>
+            <div class="col-3"><div class="cd"><b id="cd-h">--</b><small>Годин</small></div></div>
+            <div class="col-3"><div class="cd"><b id="cd-m">--</b><small>Хвилин</small></div></div>
+            <div class="col-3"><div class="cd"><b id="cd-s">--</b><small>Секунд</small></div></div>
+          </div>
+          <div class="row g-0 border-top border-ese pt-3 mb-4">
+            <div class="col-4 stat stat-divider px-2"><b>2</b><span>місяці навчання</span></div>
+            <div class="col-4 stat stat-divider px-3"><b>18</b><span>занять з ментором</span></div>
+            <div class="col-4 stat stat-divider px-3"><b>1</b><span>CV-проєкт у production</span></div>
+          </div>
+          <div class="d-flex justify-content-between align-items-end">
+            <div>
+              <div class="text-dim text-decoration-line-through font-mono small">15 999 грн</div>
+              <div class="fs-3 fw-bolder text-lime lh-1">14 399 грн*</div>
+            </div>
+            <a href="#price" class="btn btn-lime btn-sm">Реєстрація</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= ABOUT ================= -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="row g-4 g-lg-5">
+      <div class="col-lg-6 reveal">
+        <div class="eyebrow">Про курс</div>
+        <h2 class="section-title mb-4">Практичний upskilling у Computer Vision</h2>
+        <p class="text-muted-ese fs-6 mb-3">Це практичний upskilling курс для <strong class="text-white">Python-розробників, Data Science, Machine Learning та Software інженерів</strong>, які хочуть перейти в напрямок Computer Vision та навчитися будувати системи аналізу зображень і відео.</p>
+        <p class="text-muted-ese fs-6 mb-0">Ти пройдеш шлях від класичної обробки зображень в OpenCV до нейромережевих рішень CNN, YOLO та inference. Навчишся оптимізувати моделі за допомогою ONNX, OpenCV DNN та MediaPipe, а також працювати з системами трекінгу об’єктів в реальному часі — до повноцінного розгортання готової CV-системи.</p>
+      </div>
+      <div class="col-lg-6 d-grid gap-3 reveal">
+        <div class="card card-ese"><div class="card-body d-flex gap-3 p-4">
+          <div class="ico"><i class="bi bi-people"></i></div>
+          <div><h3 class="h6 fw-bold mb-1">Для кого</h3><p class="text-muted-ese small mb-0">Python-розробники, Data Science, Machine Learning та Software інженери, які переходять у Computer Vision.</p></div>
+        </div></div>
+        <div class="card card-ese"><div class="card-body d-flex gap-3 p-4">
+          <div class="ico lime"><i class="bi bi-diagram-3"></i></div>
+          <div><h3 class="h6 fw-bold mb-1">Один проєкт протягом усього курсу</h3><p class="text-muted-ese small mb-0">Усі знання ти одразу застосовуватимеш у проєкті, який створюватиметься потягом всього курсу, поступово збираючи та розгортаючи повноцінну CV-систему від першого до останнього заняття.</p></div>
+        </div></div>
+        <div class="card card-ese"><div class="card-body d-flex gap-3 p-4">
+          <div class="ico"><i class="bi bi-filetype-py"></i></div>
+          <div><h3 class="h6 fw-bold mb-1">Що потрібно знати до старту</h3><p class="text-muted-ese small mb-3">Для навчання необхідно мати практичні навики програмування на Python і знання бібліотеки NumPy.</p>
+            <div class="tech d-flex flex-wrap gap-2"><span>Python</span><span>NumPy</span></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHY + VIDEO ================= -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="row g-4 g-lg-5 align-items-center">
+      <div class="col-lg-5 reveal">
+        <div class="eyebrow">Навіщо</div>
+        <h2 class="section-title mb-4">Для чого тобі цей курс</h2>
+        <div class="quote mb-4">Від прототипу <span class="grad-text">до продакшену.</span></div>
+        <p class="text-muted-ese mb-3">Цей курс допоможе тобі опанувати навички роботи з комп’ютерним зором на рівні CV/ML спеціаліста, який будує системи аналізу зображень і відео від прототипу до продакшену.</p>
+        <p class="text-muted-ese mb-0">Ти опануєш класичні методи обробки зображень та сучасний стек глибокого навчання для CV, навчишся працювати з відеопотоками в реальному часі, оптимізувати продуктивність моделей та розгортати готові CV-рішення як сервіси. У результаті ти станеш конкурентнішим на ринку праці у сфері Computer Vision.</p>
+      </div>
+      <div class="col-lg-7 reveal">
+        <!--
+          Щоб вбудувати відео, замініть вміст .video-frame на:
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Відеопрезентація курсу" allowfullscreen></iframe>
+        -->
+        <div class="video-frame ratio ratio-16x9">
+          <a href="#" class="video-placeholder" aria-label="Відеопрезентація курсу Computer Vision Engineering">
+            <span class="vp-label font-mono small"><i class="bi bi-youtube me-1"></i>SoftServe Academy</span>
+            <span class="vp-title">Computer Vision<br>Engineering</span>
+            <span class="vp-sub font-mono">Course presentation</span>
+            <span class="vp-play"><i class="bi bi-play-fill"></i></span>
+          </a>
+        </div>
+        <p class="small text-dim mt-2 mb-0"><i class="bi bi-camera-video me-1"></i>Відеопрезентація курсу Computer Vision Engineering</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SKILLS ================= -->
+<section class="section">
+  <div class="container">
+    <div class="mb-5 reveal">
+      <div class="eyebrow">Результат</div>
+      <h2 class="section-title">Після курсу ти вмітимеш</h2>
+    </div>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+      <div class="col reveal"><div class="card card-ese h-100"><div class="card-body"><span class="num">01</span><div class="ico mb-3"><i class="bi bi-bounding-box"></i></div><p class="text-muted-ese mb-0">створювати ШІ-системи детекції об’єктів за допомогою YOLO та тренувати власні моделі</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese h-100"><div class="card-body"><span class="num">02</span><div class="ico lime mb-3"><i class="bi bi-camera-reels"></i></div><p class="text-muted-ese mb-0">аналізувати відеопотоки та виконувати трекінг об’єктів</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese h-100"><div class="card-body"><span class="num">03</span><div class="ico mb-3"><i class="bi bi-fonts"></i></div><p class="text-muted-ese mb-0">будувати OCR-рішення для розпізнавання тексту, номерних знаків, тощо</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese h-100"><div class="card-body"><span class="num">04</span><div class="ico lime mb-3"><i class="bi bi-hand-index-thumb"></i></div><p class="text-muted-ese mb-0">створювати застосунки з gesture recognition та pose estimation за допомогою MediaPipe</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese h-100"><div class="card-body"><span class="num">05</span><div class="ico mb-3"><i class="bi bi-image"></i></div><p class="text-muted-ese mb-0">працювати із зображеннями та відео в OpenCV</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese h-100"><div class="card-body"><span class="num">06</span><div class="ico lime mb-3"><i class="bi bi-search"></i></div><p class="text-muted-ese mb-0">виконувати аналіз об’єктів на зображеннях</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese h-100"><div class="card-body"><span class="num">07</span><div class="ico mb-3"><i class="bi bi-cpu"></i></div><p class="text-muted-ese mb-0">будувати та тренувати CNN, застосовувати transfer learning</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese h-100"><div class="card-body"><span class="num">08</span><div class="ico lime mb-3"><i class="bi bi-speedometer2"></i></div><p class="text-muted-ese mb-0">оптимізувати продуктивність CV-систем (FPS, multithreading, ONNX)</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese h-100"><div class="card-body"><span class="num">09</span><div class="ico mb-3"><i class="bi bi-rocket-takeoff"></i></div><p class="text-muted-ese mb-0">розгортати Computer Vision рішення через FastAPI, Docker, OpenVINO та TensorRT</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROGRAM ================= -->
+<section class="section section-alt" id="program">
+  <div class="container">
+    <div class="mb-5 reveal">
+      <div class="eyebrow">План курсу</div>
+      <h2 class="section-title mb-3">18 занять: від пікселя до production</h2>
+      <p class="lead col-lg-8 px-0">Програма поділена на три блоки. Кожне заняття додає новий шар до твого CV-проєкту.</p>
+    </div>
+
+    <ul class="nav nav-pills nav-pills-ese flex-wrap mb-4" role="tablist">
+      <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#ph1" type="button" role="tab" aria-controls="ph1" aria-selected="true"><span class="font-mono me-1">01–08</span> Classical CV</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#ph2" type="button" role="tab" aria-controls="ph2" aria-selected="false"><span class="font-mono me-1">09–14</span> Deep Learning</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link lime" data-bs-toggle="pill" data-bs-target="#ph3" type="button" role="tab" aria-controls="ph3" aria-selected="false"><span class="font-mono me-1">15–18</span> Production</button></li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="ph1" role="tabpanel">
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+          <div class="col"><div class="module"><span class="m-num">01</span><div><h3>Problem Statement in CV</h3><p>Конвертація бізнес-вимог у CV-метрики: Precision, Recall, IoU, mAP, FPS, Latency та політика використання даних</p></div></div></div>
+          <div class="col"><div class="module"><span class="m-num">02</span><div><h3>High-Speed Video Processing</h3><p>Робота з медіапотоками, буферизація та оптимізація I/O в OpenCV.</p></div></div></div>
+          <div class="col"><div class="module"><span class="m-num">03</span><div><h3>Image Transformations</h3><p>Геометричні перетворення, маніпуляція кадрами та нормалізація даних.</p></div></div></div>
+          <div class="col"><div class="module"><span class="m-num">04</span><div><h3>Color Spaces</h3><p>Колірні простори, сегментація.</p></div></div></div>
+          <div class="col"><div class="module"><span class="m-num">05</span><div><h3>Filtering &amp; Morphology</h3><p>Придушення шуму, бінаризація та морфологічна обробка.</p></div></div></div>
+          <div class="col"><div class="module"><span class="m-num">06</span><div><h3>Contour Analysis &amp; Geometry</h3><p>Детекція меж, виділення контурів та точні геометричні вимірювання.</p></div></div></div>
+          <div class="col"><div class="module"><span class="m-num">07</span><div><h3>Real-time Motion Analytics</h3><p>Відстеження оптичного потоку (Optical Flow) та віднімання фону.</p></div></div></div>
+          <div class="col"><div class="module"><span class="m-num">08</span><div><h3>Classical CV Application</h3><p>Розробка CV-додатку без використання нейромереж.</p></div></div></div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="ph2" role="tabpanel">
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+          <div class="col"><div class="module"><span class="m-num">09</span><div><h3>Agentic SDLC in CV</h3><p>Використовувати AI coding agents для створення та тестування CV pipeline, а AI-assisted annotation — для підготовки й перевірки dataset.</p></div></div></div>
+          <div class="col"><div class="module"><span class="m-num">10</span><div><h3>CNN &amp; Transfer Learning</h3><p>Сучасні нейромережеві архітектури, fine-tuning та формат ONNX. Використання PyTorch</p></div></div></div>
+          <div class="col"><div class="module"><span class="m-num">11</span><div><h3>OpenCV DNN Engine</h3><p>Швидкий запуск та інтеграція глибоких моделей через OpenCV DNN.</p></div></div></div>
+          <div class="col"><div class="module"><span class="m-num">12</span><div><h3>Custom YOLO Detection</h3><p>Навчання, аугментація та виправлення помилок власної YOLO-моделі.</p></div></div></div>
+          <div class="col"><div class="module"><span class="m-num">13</span><div><h3>Object Tracking &amp; OCR</h3><p>Трекінг об’єктів (ByteTRACK/SORT), детекція облич, жестів та поз (MediaPipe) та розпізнавання тексту.</p></div></div></div>
+          <div class="col"><div class="module"><span class="m-num">14</span><div><h3>Model Debugging</h3><p>Аналіз Edge-cases, помилок моделей.</p></div></div></div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="ph3" role="tabpanel">
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+          <div class="col"><div class="module lime"><span class="m-num">15</span><div><h3>Model Lifecycle &amp; Experiment Tracking</h3><p>Версіонування моделей, артефактів і експериментів на прикладі MLflow.</p></div></div></div>
+          <div class="col"><div class="module lime"><span class="m-num">16</span><div><h3>Deployment &amp; Inference Optimization</h3><p>Оптимізація інференсу (TensorRT/OpenVINO) для розгортання на ПК або в хмарі (cloud VM). Основні сценарії продакшн-деплойменту та hardware acceleration. <strong class="text-white">Опційно:</strong> Edge deployment (Jetson, Raspberry Pi) — за наявності обладнання.</p></div></div></div>
+          <div class="col"><div class="module lime"><span class="m-num">17</span><div><h3>Production CV Services</h3><p>Пакування системи в Docker та розгортання асинхронних API на FastAPI.</p></div></div></div>
+          <div class="col"><div class="module lime"><span class="m-num">18</span><div><h3>Production Readiness</h3><p>Чеклист готовності системи до релізу</p></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="capstone p-4 p-md-5 mt-4 reveal">
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-7">
+          <span class="tag">Курсовий проєкт</span>
+          <h3 class="h3 mt-3 mb-2">Індивідуальний CV-проєкт</h3>
+          <p class="text-muted-ese mb-0">Захист готового сервісу із деплоєм у Docker та розгортанням на Edge.</p>
+        </div>
+        <div class="col-lg-5">
+          <div class="d-flex flex-wrap gap-2">
+            <span class="cap-opt"><i class="bi bi-p-square"></i>Smart Parking</span>
+            <span class="cap-opt"><i class="bi bi-cone-striped"></i>PPE Detection</span>
+            <span class="cap-opt"><i class="bi bi-sign-intersection"></i>Traffic Analytics</span>
+            <span class="cap-opt"><i class="bi bi-patch-check"></i>Quality Inspection</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DETAILS ================= -->
+<section class="section" id="details">
+  <div class="container">
+    <div class="row g-4 g-lg-5">
+      <div class="col-lg-4 reveal">
+        <div style="position:sticky;top:110px">
+          <div class="eyebrow">Деталі курсу</div>
+          <h2 class="section-title mb-3">Все, що треба знати</h2>
+          <p class="lead">Графік, технічні вимоги та відповіді на часті питання.</p>
+          <div class="d-grid gap-2 mt-4">
+            <div class="fact"><i class="bi bi-calendar-week"></i><span>Пн, Пт о 19:00</span></div>
+            <div class="fact"><i class="bi bi-hourglass-split"></i><span>2 місяці · 18 занять</span></div>
+            <div class="fact"><i class="bi bi-translate"></i><span>Українська, матеріали частково англійською (A2)</span></div>
+            <div class="fact"><i class="bi bi-laptop"></i><span>Достатньо звичайного ноутбука</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 reveal">
+        <div class="accordion accordion-ese" id="accDetails">
+          <div class="accordion-item">
+            <h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#d1" aria-expanded="true" aria-controls="d1"><span class="idx"><i class="bi bi-calendar3"></i></span>Графік та формат курсу</button></h3>
+            <div id="d1" class="accordion-collapse collapse show" data-bs-parent="#accDetails"><div class="accordion-body"><ul class="arrow-list">
+              <li>Два заняття на тиждень — Пн, Пт о 19:00, з ментором, розбір тем та live coding практичних завдань. Тривалість: до 2-х годин.</li>
+              <li>Комунікація з ментором у Discord-чаті</li>
+              <li>Додаткові матеріали та домашні завдання з перевіркою</li>
+              <li>Мова викладання — українська, частина матеріалів англійською рівня A2</li>
+              <li>Тривалість: 2 місяці (18 занять)</li>
+            </ul></div></div>
+          </div>
+          <div class="accordion-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#d2" aria-expanded="false" aria-controls="d2"><span class="idx"><i class="bi bi-motherboard"></i></span>Технічні вимоги</button></h3>
+            <div id="d2" class="accordion-collapse collapse" data-bs-parent="#accDetails"><div class="accordion-body"><ul class="arrow-list">
+              <li>Потужний комп’ютер чи дискретна відеокарта не потрібні</li>
+              <li>Достатньо сучасного ноутбука: 8 GB RAM (рекомендовано 16 GB), процесор останніх ~5 років, вебкамера</li>
+              <li>Заняття з OpenCV, класичного CV та інференсу нейромереж (ONNX, YOLO nano/small, MediaPipe) працюють на CPU в реальному часі</li>
+              <li>Для тренування моделей використовуються безкоштовні GPU-середовища Kaggle Notebooks або Google Colab. Потужний локальний GPU не потрібен</li>
+              <li>Домашні завдання: тренування в хмарі → експорт в ONNX → локальний запуск через OpenCV DNN</li>
+              <li>До занять з тренування надаються готові стартові образи віртуальних машин з залежностями, датасетом та клітинкою експорту в ONNX</li>
+            </ul></div></div>
+          </div>
+          <div class="accordion-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#d3" aria-expanded="false" aria-controls="d3"><span class="idx"><i class="bi bi-stars"></i></span>Що робить цей курс унікальним?</button></h3>
+            <div id="d3" class="accordion-collapse collapse" data-bs-parent="#accDetails"><div class="accordion-body"><ul class="arrow-list">
+              <li>Один наскрізний проєкт: CV-система збирається та розгортається від першого до останнього заняття</li>
+              <li>Повний цикл — від класичного OpenCV до нейромереж, оптимізації інференсу та production-деплою</li>
+              <li>Робота з AI coding agents та AI-assisted annotation як частина процесу розробки</li>
+              <li>Не потрібне дороге обладнання: інференс на CPU, тренування в безкоштовних хмарних GPU-середовищах</li>
+            </ul></div></div>
+          </div>
+          <div class="accordion-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#d4" aria-expanded="false" aria-controls="d4"><span class="idx"><i class="bi bi-trophy"></i></span>Результат після курсу</button></h3>
+            <div id="d4" class="accordion-collapse collapse" data-bs-parent="#accDetails"><div class="accordion-body"><ul class="arrow-list">
+              <li>Готовий індивідуальний CV-сервіс (Smart Parking, PPE Detection, Traffic Analytics або Quality Inspection), розгорнутий у Docker</li>
+              <li>Практичний досвід з OpenCV, YOLO, PyTorch, ONNX, MediaPipe, FastAPI, OpenVINO та TensorRT</li>
+              <li>Сертифікат міжнародного зразка від IT-компанії</li>
+            </ul></div></div>
+          </div>
+          <div class="accordion-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#d5" aria-expanded="false" aria-controls="d5"><span class="idx"><i class="bi bi-question-circle"></i></span>FAQs</button></h3>
+            <div id="d5" class="accordion-collapse collapse" data-bs-parent="#accDetails"><div class="accordion-body">
+              <div class="faq-item"><strong class="text-white d-block mb-1">Чи підійде курс новачкам у програмуванні?</strong>Для навчання необхідно мати практичні навики програмування на Python і знання бібліотеки NumPy.</div>
+              <div class="faq-item"><strong class="text-white d-block mb-1">Чи потрібна потужна відеокарта?</strong>Ні. Інференс працює на CPU, а для тренування моделей використовуються безкоштовні Kaggle Notebooks або Google Colab.</div>
+              <div class="faq-item"><strong class="text-white d-block mb-1">Як поставити питання щодо програми?</strong>Після реєстрації на курс ти отримаєш доступ до чату з ментором у Discord.</div>
+              <div class="faq-item"><strong class="text-white d-block mb-1">Чи можна навчатися безкоштовно?</strong>Є кілька безоплатних місць для ветеранів, внутрішньо переміщених осіб та людей із вразливих груп. Деталі — у блоці «Вартість».</div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRICE / REGISTRATION ================= -->
+<section class="section section-alt" id="price">
+  <div class="container">
+    <div class="mb-5 reveal">
+      <div class="eyebrow">Реєстрація</div>
+      <h2 class="section-title mb-3">Реєстрація на курс</h2>
+      <p class="lead col-lg-8 px-0">Після реєстрації на курс ти отримаєш доступ до чату з ментором в Discord, де зможеш поставити додаткові питання щодо програми курсу.</p>
+    </div>
+
+    <div class="price-card reveal">
+      <div class="row g-0">
+        <div class="col-lg-5 price-left p-4 p-md-5">
+          <span class="tag">Black Friday</span>
+          <div class="text-white-50 text-decoration-line-through font-mono mt-4">15 999 грн</div>
+          <div class="price-big mt-1 mb-2">14 399 грн*</div>
+          <span class="badge rounded-pill bg-dark bg-opacity-50 border border-light border-opacity-25 font-mono mb-4">−10%</span>
+          <p class="text-white-50 mb-4 small" style="max-width:320px">*Ціна діє при оплаті з 02.11.26 до 30.11.26</p>
+          <a href="#" class="btn btn-lime position-relative" style="z-index:1">Зареєструватися <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+        <div class="col-lg-7 p-4 p-md-5 d-flex flex-column justify-content-center gap-4">
+          <div>
+            <div class="font-mono small text-muted-ese mb-2"><i class="bi bi-calendar3 me-1"></i>30.11.2026 – 29.01.2027</div>
+            <h3 class="h4 mb-0">Computer Vision Engineering: від обробки зображень до production-рішень</h3>
+          </div>
+          <div class="d-flex gap-3">
+            <div class="ico ico-sm lime"><i class="bi bi-chat-square-dots"></i></div>
+            <div>
+              <p class="mb-1 fw-bold">Потрібно більше персональної підтримки?</p>
+              <p class="text-muted-ese mb-2">До курсу можна додати індивідуальні заняття з ментором — щоб детальніше розібрати складні теми чи індивідуально попрацювати над практичними завданнями. Заняття проходять онлайн та доповнюють основну програму курсу.</p>
+              <a href="#" class="link-lime fw-bold">Дізнатися більше <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+          <p class="small text-dim border-top border-ese pt-3 mb-0">** Послуги надаються ТОВ «СофтСерв Технології», онлайн. Приклад рахунку-договору <a href="#">тут</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="notice d-flex gap-3 align-items-start p-4 mt-4 reveal">
+      <i class="bi bi-heart-fill flex-shrink-0"></i>
+      <div>
+        <strong class="d-block mb-1">Безоплатні місця для ветеранів, ВПО та людей із вразливих груп</strong>
+        <span class="text-muted-ese">Хочемо зробити навчання в IT доступнішим для тих, хто дуже хоче навчатися, але не має можливості оплатити курс. Будь ласка, заповни <a href="#">форму</a>, поясни свою ситуацію та виконай тестове завдання, адже тобі знадобляться базові знання, щоб успішно пройти курс. Безплатне навчання можна отримати тільки на один курс.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BENEFITS ================= -->
+<section class="section" id="benefits">
+  <div class="container">
+    <div class="mb-5 reveal">
+      <div class="eyebrow">Чому з нами</div>
+      <h2 class="section-title">Переваги навчання у нас</h2>
+    </div>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+      <div class="col reveal"><div class="card card-ese benefit h-100"><div class="card-body p-4"><div class="d-flex justify-content-between align-items-center mb-2"><h3>Розвиток</h3><i class="bi bi-graph-up-arrow"></i></div><p class="text-muted-ese mb-0">Доступ до додаткових e-курсів</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese benefit hl h-100"><div class="card-body p-4"><div class="d-flex justify-content-between align-items-center mb-2"><h3>Сертифікат</h3><i class="bi bi-patch-check"></i></div><p class="text-muted-ese mb-0">Міжнародного зразка від IT-компанії</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese benefit h-100"><div class="card-body p-4"><div class="d-flex justify-content-between align-items-center mb-2"><h3>Практика</h3><i class="bi bi-laptop"></i></div><p class="text-muted-ese mb-0">Закріплення теорії через практичні завдання курсу</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese benefit h-100"><div class="card-body p-4"><div class="d-flex justify-content-between align-items-center mb-2"><h3>Підтримка</h3><i class="bi bi-heart"></i></div><p class="text-muted-ese mb-0">Від досвідчених менторів та навчальних ШІ помічників</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese benefit h-100"><div class="card-body p-4"><div class="d-flex justify-content-between align-items-center mb-2"><h3>Мова</h3><i class="bi bi-translate"></i></div><p class="text-muted-ese mb-0">Українська (матеріали англійською)</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese benefit hl h-100"><div class="card-body p-4"><div class="d-flex justify-content-between align-items-center mb-2"><h3>ШІ / AI</h3><i class="bi bi-stars"></i></div><p class="text-muted-ese mb-0">Навчаємо використовувати сучасні ШІ-помічники та інструменти</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese benefit h-100"><div class="card-body p-4"><div class="d-flex justify-content-between align-items-center mb-2"><h3>Ком’юніті</h3><i class="bi bi-discord"></i></div><p class="text-muted-ese mb-0">Спільнота однодумців у Discord</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese benefit h-100"><div class="card-body p-4"><div class="d-flex justify-content-between align-items-center mb-2"><h3>Мовний апгрейд</h3><i class="bi bi-chat-dots"></i></div><p class="text-muted-ese mb-0">Безкоштовний розмовний клуб з англійської</p></div></div></div>
+      <div class="col reveal"><div class="card card-ese benefit h-100"><div class="card-body p-4"><div class="d-flex justify-content-between align-items-center mb-2"><h3>Soft Skills</h3><i class="bi bi-lightbulb"></i></div><p class="text-muted-ese mb-0">Закриті події з експертами компанії</p></div></div></div>
+    </div>
+    <div class="text-center mt-5 reveal">
+      <a href="#" class="btn btn-outline-ese">Дивитись схожі курси <i class="bi bi-arrow-right ms-1"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MENTOR + SUBSCRIBE ================= -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="row g-4 g-lg-5 align-items-center">
+      <div class="col-lg-5 reveal">
+        <div class="eyebrow">Команда</div>
+        <h2 class="section-title mb-4">Твоїм ментором буде</h2>
+        <!-- Щоб додати фото: вставте <img src="path/to/photo.jpg" alt="Viktor Rovinskyi"> всередину .photo -->
+        <div class="card card-ese mentor" style="max-width:340px">
+          <div class="photo">VR</div>
+          <div class="card-body"><h3 class="h5 mb-1">Viktor Rovinskyi</h3><span class="font-mono small text-muted-ese"><i class="bi bi-geo-alt me-1"></i>Ukraine</span></div>
+        </div>
+      </div>
+      <div class="col-lg-7 reveal">
+        <div class="gym-inner p-4 p-md-5">
+          <div class="eyebrow">Оновлення</div>
+          <h2 class="h2 mb-3">Підпишись на оновлення, щоб дізнатись про відкриття реєстрації на курс</h2>
+          <form class="subscribe needs-validation mt-4" id="subForm" novalidate>
+            <div class="input-group input-group-lg">
+              <input type="email" class="form-control" id="sub-mail" placeholder="Твоя пошта" aria-label="Пошта" required>
+              <button class="btn btn-lime" type="submit">Підписатись</button>
+            </div>
+            <div class="form-text text-dim mt-2" id="sub-msg">Надсилатимемо лише новини про цей курс.</div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT BAND ================= -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-md-6 reveal">
+        <a href="tel:0800603000" class="contact-card d-flex gap-4 align-items-center p-4 h-100 text-decoration-none">
+          <span class="c-ico"><i class="bi bi-telephone"></i></span>
+          <span>
+            <span class="eyebrow mb-1">Зателефонувати</span>
+            <span class="d-block fs-3 fw-bolder text-white">0 800 60 3000</span>
+            <span class="d-block small text-muted-ese">Пн - Пт. 10:00 - 19:00 · Безкоштовно по Україні</span>
+          </span>
+        </a>
+      </div>
+      <div class="col-md-6 reveal">
+        <a href="#" class="contact-card alt d-flex gap-4 align-items-center p-4 h-100 text-decoration-none">
+          <span class="c-ico"><i class="bi bi-envelope"></i></span>
+          <span>
+            <span class="eyebrow mb-1">Є питання?</span>
+            <span class="d-block fs-3 fw-bolder text-white">Напиши нам <i class="bi bi-arrow-up-right fs-5"></i></span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="bg-ese-2 border-top border-ese pt-5 pb-4">
+  <div class="container pt-3">
+    <div class="row g-4 mb-5">
+      <div class="col-md-6 col-lg-4">
+        <a href="#top" class="navbar-brand fs-4 text-white" style="font-weight:500">soft<b style="font-weight:800">serve</b></a>
+        <h4 class="mt-4 mb-3">HQ у США</h4>
+        <address class="mb-0">201 W 5th Street, Suite 1550<br>Austin, TX 78701<br>+1-512-516-8880<br>Безкоштовний номер: +1-866-687-3588</address>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2 offset-lg-1">
+        <h4 class="mb-3">Компанія</h4>
+        <ul class="list-unstyled d-grid gap-2"><li><a href="#">Домашня</a></li><li><a href="#">Про нас</a></li><li><a href="#">Індустрії</a></li><li><a href="#">Послуги</a></li><li><a href="#">Новини</a></li></ul>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2">
+        <h4 class="mb-3">Кар’єра</h4>
+        <ul class="list-unstyled d-grid gap-2"><li><a href="#">Шлях розвитку</a></li><li><a href="#">Твоя кар’єра</a></li><li><a href="#">Курси</a></li><li><a href="#">Університет</a></li><li><a href="#">Університетам</a></li></ul>
+      </div>
+      <div class="col-6 col-md-3 col-lg-3">
+        <h4 class="mb-3">Корисне</h4>
+        <ul class="list-unstyled d-grid gap-2"><li><a href="#">Блог</a></li><li><a href="#">Корисні ресурси</a></li><li><a href="#">Для постачальників</a></li><li><a href="#">Контактна форма</a></li></ul>
+        <div class="d-flex flex-wrap gap-3 mt-3 fs-5">
+          <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+          <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+          <a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+          <a href="#" aria-label="Telegram"><i class="bi bi-telegram"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="border-top border-ese pt-4 d-flex flex-column flex-md-row justify-content-between gap-3 small text-dim">
+      <span>© 2026 SoftServe Inc.</span>
+      <nav class="d-flex flex-wrap gap-3">
+        <a href="#" class="small">Політика приватності</a><a href="#" class="small">Умови користування сайтом</a><a href="#" class="small">Інформаційна безпека</a><a href="#" class="small">Карта сайту</a><a href="#" class="small">Accessibility Statement</a><a href="#" class="small">Cookie Preferences</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<a href="#price" class="btn btn-lime float-cta">Реєстрація</a>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Countdown to course start: 30.11.2026 19:00 Kyiv time (UTC+2)
+  (function(){
+    const target = new Date('2026-11-30T19:00:00+02:00').getTime();
+    const pad = n => String(n).padStart(2,'0');
+    const set = (id,v) => document.getElementById(id).textContent = pad(v);
+    function tick(){
+      let diff = Math.max(0, target - Date.now());
+      const d = Math.floor(diff/864e5); diff %= 864e5;
+      const h = Math.floor(diff/36e5);  diff %= 36e5;
+      const m = Math.floor(diff/6e4);   diff %= 6e4;
+      set('cd-d',d); set('cd-h',h); set('cd-m',m); set('cd-s',Math.floor(diff/1e3));
+    }
+    tick(); setInterval(tick,1000);
+  })();
+
+  // Close mobile menu after clicking a link
+  document.querySelectorAll('#navMenu .nav-link, #navMenu .btn').forEach(a => a.addEventListener('click', () => {
+    const menu = document.getElementById('navMenu');
+    if (menu.classList.contains('show')) bootstrap.Collapse.getOrCreateInstance(menu).hide();
+  }));
+
+  // Subscribe form (connect to your backend / Formspree here)
+  const sub = document.getElementById('subForm');
+  sub.addEventListener('submit', e => {
+    e.preventDefault();
+    const msg = document.getElementById('sub-msg');
+    if (!sub.checkValidity()) { sub.classList.add('was-validated'); msg.textContent = 'Вкажіть коректну пошту.'; return; }
+    msg.innerHTML = '<span class="text-lime"><i class="bi bi-check-circle me-1"></i>Дякуємо! Ми повідомимо про відкриття реєстрації.</span>';
+    sub.reset(); sub.classList.remove('was-validated');
+  });
+
+  // Reveal on scroll
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.12}) : null;
+  document.querySelectorAll('.reveal').forEach((el,i) => {
+    el.style.transitionDelay = (i % 4) * 70 + 'ms';
+    io ? io.observe(el) : el.classList.add('in');
+  });
+</script>
+</body>
+</html>
